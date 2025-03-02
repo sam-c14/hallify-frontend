@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hallify Home Page</title>
+    <script src="/assets/button.js" type="module"></script>
+  </head>
+
+  <body>
+    <h1>Reusable Button Component Example</h1>
+
+    <!-- Usage of custom buttons-->
+    <custom-button
+      text="Submit Form"
+      variant="primary"
+      onClick="handleSubmit"
+    ></custom-button>
+    <custom-button
+      text="Cancel"
+      variant="secondary"
+      onClick="handleCancel"
+    ></custom-button>
+    <custom-button
+      text="Delete"
+      variant="danger"
+      onClick="handleDelete"
+    ></custom-button>
+
+    <script>
+      function handleSubmit() {
+        alert("Form Submitted!");
+      }
+      function handleCancel() {
+        alert("Action Canceled!");
+      }
+      function handleDelete() {
+        alert("Item Deleted!");
+      }
+    </script>
+  </body>
+</html>
