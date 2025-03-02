@@ -2,31 +2,55 @@
 class CustomButton extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" }); // Shadow DOM encapsulation
+    this.attachShadow({ mode: "open" });
   }
 
   async connectedCallback() {
-    // Load and attach the template
-    const response = await fetch("/components/button.html");
-    const html = await response.text();
-    this.shadowRoot.innerHTML = html;
+    try {
+      // Fetch the template content
+      const response = await fetch("/components/button.html");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch button.html: ${response.statusText}`);
+      }
+      const html = await response.text();
 
-    // Access the button and apply dynamic content
-    const button = this.shadowRoot.querySelector("button");
+      // Create a temporary container to parse the HTML
+      const tempContainer = document.createElement("div");
+      tempContainer.innerHTML = html;
 
-    // Set button text (default if none provided)
-    button.textContent = this.getAttribute("text") || "Click Me";
+      // Extract the template
+      const template = tempContainer.querySelector("template");
+      if (!template) {
+        throw new Error("Template not found in the fetched HTML.");
+      }
 
-    // Handle variant (e.g., primary, secondary, danger)
-    const variant = this.getAttribute("variant") || "primary";
-    button.className = `btn btn-${variant}`;
+      // Clone the content inside the template
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-    // Add click event listener if provided
-    if (this.hasAttribute("onClick")) {
-      button.addEventListener("click", () => {
-        const handler = this.getAttribute("onClick");
-        window[handler]?.();
-      });
+      // Select the button element
+      const button = this.shadowRoot.querySelector("button");
+      if (!button) {
+        throw new Error("Button element not found in the template.");
+      }
+
+      // Set button text (with fallback)
+      button.textContent = this.getAttribute("text") || "Click Me";
+
+      // Apply button variant (e.g., primary, secondary, danger)
+      const variant = this.getAttribute("variant") || "primary";
+      button.classList.add(`btn-${variant}`);
+
+      // Handle click event if provided
+      if (this.hasAttribute("onClick")) {
+        const handlerName = this.getAttribute("onClick");
+        if (typeof window[handlerName] === "function") {
+          button.addEventListener("click", () => window[handlerName]());
+        } else {
+          console.warn(`Function ${handlerName} is not defined.`);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading custom button:", error);
     }
   }
 }

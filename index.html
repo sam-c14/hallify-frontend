@@ -1,39 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Hallify Home Page</title>
-    <script src="/assets/button.js" type="module"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Button Component</title>
+    <script src="/assets/js/components/button.js" type="module"></script>
   </head>
-
   <body>
-    <h1>Reusable Button Component Example</h1>
+    <h1>Reusable Button Component</h1>
 
-    <!-- Usage of custom buttons-->
+    <!-- Use the custom button -->
     <custom-button
-      text="Submit Form"
+      text="Submit"
       variant="primary"
       onClick="handleSubmit"
-    ></custom-button>
-    <custom-button
-      text="Cancel"
-      variant="secondary"
-      onClick="handleCancel"
-    ></custom-button>
-    <custom-button
-      text="Delete"
-      variant="danger"
-      onClick="handleDelete"
     ></custom-button>
 
     <script>
       function handleSubmit() {
         alert("Form Submitted!");
-      }
-      function handleCancel() {
-        alert("Action Canceled!");
-      }
-      function handleDelete() {
-        alert("Item Deleted!");
       }
     </script>
   </body>
