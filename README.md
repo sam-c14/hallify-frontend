@@ -1,6 +1,6 @@
 # HALLIFY-FRONTEND
 
-Welcome to the HALLIFY-FRONTEND project! This is a booking application which is built using the core tools of the web, html, css and javascript. The codebase is setup using a modular approach, i.e, each reusable component according to the design which can be found here https://www.figma.com/design/e25qhVmCdEq5Q2YBhLqcAH/Hallify?node-id=1302-4&t=U9srIsrJDKjZbehE-0, is seperated into modules using the template tag to define components in the html file and then using javascript to manage imports within other html files. This ensures scalability for the application.
+Welcome to the HALLIFY-FRONTEND project! This is a booking application which is built using the core tools of the web, html, css and javascript. The codebase is setup using a modular approach, i.e, each reusable component according to the design which can be found here https://www.figma.com/design/e25qhVmCdEq5Q2YBhLqcAH/Hallify?node-id=1302-4&t=U9srIsrJDKjZbehE-0, It is seperated into modules using the template tag to define components in the html file and then using javascript to manage imports within other html files. This ensures scalability for the application.
 
 ## How to Run Locally
 
