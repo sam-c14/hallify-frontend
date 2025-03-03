@@ -2,14 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynamic Button Component</title>
+    <title>SPA with Custom Components</title>
+    <script src="/assets/js/main.js" type="module"></script>
     <script src="/assets/js/components/button.js" type="module"></script>
   </head>
   <body>
-    <h1>Reusable Button Component</h1>
+    <nav>
+      <a href="#/about" data-link>About Us</a>
+    </nav>
 
-    <!-- Use the custom button -->
+    <h1>Hallify SPA</h1>
+
+    <!-- Every Unnecessary content here would be removed, as soon as development commences, and the hash based routing will be switched in production -->
+
+    <!-- Dynamic content loads here -->
+    <div id="app"></div>
+
+    <!-- Custom Button Example -->
     <custom-button
       text="Submit"
       variant="primary"

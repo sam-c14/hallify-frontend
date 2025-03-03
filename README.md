@@ -63,6 +63,8 @@ To run the project locally on your machine, follow these simple steps:
 
 6. Follow the js guideline to define & render a reusable component in the project.
 
+7. We are using an SPA approach meaning that routes would be properly defined within the pages subdirectory, note to call every html file within this directory the route name which you would like it to have within the application.
+
 More Guidelines would be added soon
 
 ## HAPPY CODING CSC 26
