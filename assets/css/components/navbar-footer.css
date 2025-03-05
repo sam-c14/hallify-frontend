@@ -121,7 +121,7 @@ header {
 .footer-nav {
   display: flex;
   justify-content: space-evenly;
-  background-color: antiquewhite;
+  background-color: white;
   padding: 80px 0;
   line-height: 2em;
 }
