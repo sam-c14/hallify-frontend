@@ -65,6 +65,65 @@ To run the project locally on your machine, follow these simple steps:
 
 7. We are using an SPA approach meaning that routes would be properly defined within the pages subdirectory, note to call every html file within this directory the route name which you would like it to have within the application.
 
-More Guidelines would be added soon
+8. We are switching from shadowDOM to LightDOM to allow the use of external stylesheets instead of isolated styles in each custom component.
+
+9. All stylesheets should be imported into the main.css file.
+
+# 📚 Adding Custom Components
+
+This project supports dynamic custom components using the registerCustomElement function. Follow the steps below to add a new component.
+
+## 📌 How to Add a Custom Component
+
+1. **Create the Component Template**
+
+   Add a new HTML file inside the /components directory. This file should contain your component's structure and optional styles.
+
+   ```bash
+   <template id="button-template">
+     <button class="btn btn-primary"></button>
+   </template>
+   ```
+
+2. **Register the Component**
+
+   In the registerComponents function (found in /assets/js/main.js), add a new await registerCustomElement call.
+
+   ```bash
+   async function registerComponents() {
+    await registerCustomElement("navbar", "/components/navbar.html");
+    await registerCustomElement("footer", "/components/footer.html");
+    await registerCustomElement("button", "/components/button.html");
+   }
+   ```
+
+   ✅ Ensure the first argument is the name of the custom component, and the second argument is the path to the HTML file.
+
+3. **Use the Component in Your HTML**
+
+   You can now use the custom component as an HTML tag anywhere in your page.
+
+   ```bash
+   <custom-navbar></custom-navbar>
+   <custom-button text="Submit"></custom-button>
+   <custom-footer></custom-footer>
+   ```
+
+4. **Ensure External Styles Apply**
+
+   Since the components are rendered in the Light DOM, they will inherit styles from external stylesheets. Ensure you add your styles to the appropriate CSS files (e.g., main.css).
+
+   ```bash
+   .nav-links ul {
+    display: flex;
+    gap: 20px;
+   }
+   ```
+
+   ✅ Ensure this stylesheet is imported in your main CSS file:
+
+   ```bash
+   @import "./components/navbar.css";
+   ```
 
 ## HAPPY CODING CSC 26

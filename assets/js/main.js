@@ -1,6 +1,11 @@
+import { registerComponents } from "./components/index.js";
+
+// Register all components
+registerComponents();
+
 // Handle navigation
 function navigateTo(route) {
-  window.location.hash = route; // Use hash-based routing
+  window.location.hash = route;
   loadPage(route);
 }
 
