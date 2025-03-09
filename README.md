@@ -21,9 +21,9 @@ To run the project locally on your machine, follow these simple steps:
 5. **Run the Development Server**: After installing the dependencies, you can start the development server using the following command:
    `npm run dev`
 
-6. **Start Coding**: You're all set! Now you can start coding and making changes to the project.
+6. **Pull Requests**: To work on any feature, branch off the dev branch and name the branch using this convention your-name/feature/feature-name-to-be-worked-on. Each PR should be made to the dev branch.
 
-7. Ensure you stick to best practices and professional guidelines.
+7. **Start Coding**: You're all set! Now you can start coding and making changes to the project.
 
 # 📦 Redux Overview
 
@@ -111,5 +111,6 @@ export default Counter;
 - Always check for assets, variables, data and utilities in the top level homogenious folder before adding a new one.
 - Ensure to reuse components, layout, hooks and other reusables, when ever you can.
 - If you encounter any issues or have questions, feel free to reach out to the project developers for assistance.
+- To know more about redux, Check out thier documentation [Redux docs](https://redux-toolkit.js.org/).
 
 Happy coding! 🚀
