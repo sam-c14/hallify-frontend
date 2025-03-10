@@ -1,6 +1,13 @@
 /* src/styles/globals.css */
 
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 /* Box Sizing (Similar to Tailwind's reset) */
+:root {
+  --font-instrument-sans: "Instrument Sans";
+  --font-inter: "Inter";
+}
+
 *,
 *::before,
 *::after {

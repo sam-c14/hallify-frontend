@@ -111,6 +111,7 @@ export default Counter;
 - Always check for assets, variables, data and utilities in the top level homogenious folder before adding a new one.
 - Ensure to reuse components, layout, hooks and other reusables, when ever you can.
 - If you encounter any issues or have questions, feel free to reach out to the project developers for assistance.
+- Use any of the css font variables in your css component files, use them by putting var(--font-name).
 - To know more about redux, Check out thier documentation [Redux docs](https://redux-toolkit.js.org/).
 
 Happy coding! 🚀
