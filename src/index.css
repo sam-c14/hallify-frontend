@@ -1,3 +1,17 @@
 /* This file should be used for only imports of component, pages or layout css files */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 @import "tailwindcss";
 @import "./styles/globals.css";
+
+@theme {
+  --color-purple-500: #7a5af8;
+  --color-purple-900: #3e1c96;
+  --color-sub-500: #525866;
+  --color-grayed-out: #0a142f;
+  --color-neutral-100: #f6f8fa;
+  --color-neutral-600: #31353f;
+  --color-neutral-700: #20232d;
+  --font-instrument-sans: "Instrument Sans", "sans-serif";
+  --font-inter: "Inter", "sans-serif";
+}
