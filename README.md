@@ -112,6 +112,7 @@ export default Counter;
 - Ensure to reuse components, layout, hooks and other reusables, when ever you can.
 - If you encounter any issues or have questions, feel free to reach out to the project developers for assistance.
 - Use any of the css font variables in your css component files, use them by putting var(--font-name).
+- This project also uses a combination of tailwindcss and base css styling, More information on tailwindcss is found here [Tailwind Docs](https://tailwindcss.com/docs).
 - To know more about redux, Check out thier documentation [Redux docs](https://redux-toolkit.js.org/).
 
 Happy coding! 🚀
