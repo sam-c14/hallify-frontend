@@ -10,6 +10,7 @@ const Home = () => {
       <div className="lg:px-32 px-5 mt-10">
         <VenueList
           venues={venues}
+          xlCount={5}
           title={"Explore Stunning Venues"}
           description={"Browse top-rated event spaces tailored to your needs"}
         />
