@@ -10,7 +10,7 @@ const VenueList = ({ venues, title, description }) => {
           {description}
         </p>
       )}
-      <div className="grid gap-x-3 gap-y-6 xl:grid-cols-5 mt-2 md:grid-cols-3 grid-cols-1">
+      <div className="grid gap-x-3 gap-y-6 xl:grid-cols-5 place-items-center mt-2 md:grid-cols-3 grid-cols-1">
         {venues.map((venue, index) => (
           <VenueCard
             key={index}
