@@ -15,7 +15,7 @@ const VenueList = ({ venues, title, description, xlCount }) => {
       )}
       <div
         className={`grid gap-x-3 gap-y-6 place-items-center mt-2 md:grid-cols-3 grid-cols-1 xl:grid-cols-${
-          xlCount ?? "5"
+          xlCount ?? 5
         }`}
       >
         {venues.map((venue, index) => (
