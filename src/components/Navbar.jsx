@@ -6,10 +6,26 @@ import Favorites from "../assets/icons/favorites";
 import Bookings from "../assets/icons/bookings";
 import Menu from "../assets/icons/menu";
 import XMark from "../assets/icons/x-mark";
+import ModalWrapper from "../components/ModalWrapper";
+import SignInModalContent from "./SignInModal";
+// import ModalWrapper from "./path/to/ModalWrapper"; // You will handle the import path
+// import other icons and components (NigerianFlag, Favorites, Bookings, BrandLogo, Menu, XMark, Link) - assuming these are already correctly imported in your actual project.
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  XMark;
+  const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false); // NEW STATE: for Sign-in Modal visibility
+
+  // Function to open the Sign-in Modal
+  const openSignInModal = () => {
+    setIsSignInModalOpen(true);
+  };
+
+  // Function to close the Sign-in Modal
+  const closeSignInModal = () => {
+    setIsSignInModalOpen(false);
+  };
+
+  XMark; // This line is still not doing anything useful as it is. You can remove it or use it if needed later.
 
   const navLinks = [
     { icon: <NigerianFlag />, text: "NGN" },
@@ -32,7 +48,10 @@ const Navbar = () => {
             <span className="font-inter lg:text-base text-sm">{text}</span>
           </button>
         ))}
-        <button className="rounded-xl lg:text-base text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md hover:scale-105 transition-all">
+        <button
+          className="rounded-xl lg:text-base text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md hover:scale-105 transition-all"
+          onClick={openSignInModal} // ADDED: openSignInModal on click
+        >
           Sign In
         </button>
         <button className="rounded-xl lg:text-base text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white hover:text-purple-500 hover:bg-transparent transition-all">
@@ -60,7 +79,10 @@ const Navbar = () => {
               <span className="font-inter text-sm">{text}</span>
             </button>
           ))}
-          <button className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all">
+          <button
+            className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
+            onClick={openSignInModal} // ADDED: openSignInModal on click
+          >
             Sign In
           </button>
           <button className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all">
@@ -68,6 +90,11 @@ const Navbar = () => {
           </button>
         </div>
       )}
+
+      {/* Sign-in Modal Wrapper */}
+      <ModalWrapper isOpen={isSignInModalOpen} onClose={closeSignInModal}>
+        <SignInModalContent onClose={closeSignInModal} />
+      </ModalWrapper>
     </div>
   );
 };

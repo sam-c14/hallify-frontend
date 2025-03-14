@@ -8,7 +8,8 @@ import React, { useRef } from "react";
 // };
 
 const ModalWrapper = ({ isOpen, onClose, children, fullscreen }) => {
-  const dialogRef = useRef < HTMLDialogElement > null;
+  // I changed this from useRef<HTMLDialogElement> to useRef(null) - Samuel Bassey John
+  const dialogRef = useRef(null);
 
   // Open/Close dialog when isOpen changes
   React.useEffect(() => {

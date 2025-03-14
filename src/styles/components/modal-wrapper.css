@@ -17,6 +17,9 @@
 .modal-wrapper::backdrop {
   background: rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Opened state */
@@ -48,6 +51,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

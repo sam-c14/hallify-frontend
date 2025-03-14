@@ -13,8 +13,10 @@ dialog {
   border-radius: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background: white;
-  max-width: 90vw; /* Responsive */
-  max-height: 80vh; /* Prevent overflow */
+  max-width: 90vw;
+  /* Responsive */
+  max-height: 80vh;
+  /* Prevent overflow */
   overflow: auto;
   transition: opacity 0.3s ease;
 }
@@ -38,6 +40,7 @@ dialog::backdrop {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
