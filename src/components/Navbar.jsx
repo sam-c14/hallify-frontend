@@ -14,18 +14,18 @@ import SignInModalContent from "./SignInModal";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false); // NEW STATE: for Sign-in Modal visibility
+  const [authState, setAuthState] = useState("sign-up");
 
   // Function to open the Sign-in Modal
-  const openSignInModal = () => {
+  const openAuthModal = (authState) => {
     setIsSignInModalOpen(true);
+    setAuthState(authState);
   };
 
   // Function to close the Sign-in Modal
   const closeSignInModal = () => {
     setIsSignInModalOpen(false);
   };
-
-  XMark; // This line is still not doing anything useful as it is. You can remove it or use it if needed later.
 
   const navLinks = [
     { icon: <NigerianFlag />, text: "NGN" },
@@ -50,11 +50,14 @@ const Navbar = () => {
         ))}
         <button
           className="rounded-xl lg:text-base text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md hover:scale-105 transition-all"
-          onClick={openSignInModal} // ADDED: openSignInModal on click
+          onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
         >
           Sign In
         </button>
-        <button className="rounded-xl lg:text-base text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white hover:text-purple-500 hover:bg-transparent transition-all">
+        <button
+          onClick={() => openAuthModal("sign-up")}
+          className="rounded-xl lg:text-base text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white hover:text-purple-500 hover:bg-transparent transition-all"
+        >
           Get Started
         </button>
       </div>
@@ -81,11 +84,14 @@ const Navbar = () => {
           ))}
           <button
             className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
-            onClick={openSignInModal} // ADDED: openSignInModal on click
+            onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
           >
             Sign In
           </button>
-          <button className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all">
+          <button
+            onClick={() => openAuthModal("sign-up")}
+            className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all"
+          >
             Get Started
           </button>
         </div>
@@ -93,7 +99,10 @@ const Navbar = () => {
 
       {/* Sign-in Modal Wrapper */}
       <ModalWrapper isOpen={isSignInModalOpen} onClose={closeSignInModal}>
-        <SignInModalContent onClose={closeSignInModal} />
+        <SignInModalContent
+          onClose={closeSignInModal}
+          isSignUp={authState === "sign-up"}
+        />
       </ModalWrapper>
     </div>
   );

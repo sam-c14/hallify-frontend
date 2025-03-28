@@ -11,8 +11,8 @@ dialog {
   border: none;
   padding: 1.5rem;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: white;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  /* background: white; */
   max-width: 90vw;
   /* Responsive */
   max-height: 80vh;
