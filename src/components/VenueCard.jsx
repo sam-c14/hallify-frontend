@@ -12,9 +12,14 @@ const VenueCard = ({
   reviewCount,
   guestCapacity,
   rate,
+  onClick,
 }) => {
   return (
-    <div className="flex flex-col gap-y-3 font-inter">
+    <div
+      role="link"
+      onClick={onClick}
+      className="flex flex-col gap-y-3 font-inter cursor-pointer"
+    >
       <div className="relative rounded-lg min-w-[230px] max-w-[232px] h-[195px]">
         <img
           src={cardImg}
