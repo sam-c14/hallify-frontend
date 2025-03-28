@@ -1,17 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
-// type ModalWrapperProps = {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   children: ReactNode;
-//   fullscreen?: boolean;
-// };
+const ModalWrapper = ({ isOpen, onClose, children }) => {
+  const dialogRef = useRef(null);
 
-const ModalWrapper = ({ isOpen, onClose, children, fullscreen }) => {
-  const dialogRef = useRef < HTMLDialogElement > null;
-
-  // Open/Close dialog when isOpen changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       dialogRef.current?.showModal();
     } else {
@@ -19,20 +11,30 @@ const ModalWrapper = ({ isOpen, onClose, children, fullscreen }) => {
     }
   }, [isOpen]);
 
+  if (!isOpen) return null; // Ensure nothing renders when closed
+
   return (
-    <dialog
-      ref={dialogRef}
-      className={`modal-wrapper ${fullscreen ? "dialog-fullscreen" : ""}`}
-      onClose={onClose}
-      onClick={(e) => {
-        if (e.target === dialogRef.current) onClose();
-      }}
-    >
-      <button className="dialog-close" onClick={onClose}>
-        &times;
-      </button>
-      {children}
-    </dialog>
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 w-screen h-screen">
+      <dialog
+        ref={dialogRef}
+        className="bg-white p-6 rounded-lg shadow-lg"
+        style={{
+          position: "fixed", // Force it to obey centering rules
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)", // Perfect centering trick
+          border: "none",
+          maxWidth: "90vw",
+          maxHeight: "80vh",
+          overflow: "auto",
+        }}
+        onClick={(e) => {
+          if (e.target === dialogRef.current) onClose();
+        }}
+      >
+        {children}
+      </dialog>
+    </div>
   );
 };
 
