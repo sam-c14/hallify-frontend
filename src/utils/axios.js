@@ -1,8 +1,7 @@
 import axios from "axios";
 
 // Base API URL (change as needed)
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://api.example.com";
+const API_BASE_URL = "https://hallbackend.onrender.com";
 
 const logoutUser = () => {
   console.log("Session expired. Logging out...");
@@ -31,7 +30,7 @@ axiosInstance.interceptors.response.use(
 );
 
 // **Reusable API functions**
-export const apiGet = async (url, params = {}) => {
+export const get = async (url, params = {}) => {
   try {
     const response = await axiosInstance.get(url, { params });
     return response.data;
@@ -41,7 +40,7 @@ export const apiGet = async (url, params = {}) => {
   }
 };
 
-export const apiPost = async (url, data) => {
+export const post = async (url, data) => {
   try {
     const response = await axiosInstance.post(url, data);
     return response.data;
@@ -51,7 +50,7 @@ export const apiPost = async (url, data) => {
   }
 };
 
-export const apiPut = async (url, data) => {
+export const put = async (url, data) => {
   try {
     const response = await axiosInstance.put(url, data);
     return response.data;
@@ -61,7 +60,7 @@ export const apiPut = async (url, data) => {
   }
 };
 
-export const apiPatch = async (url, data) => {
+export const patch = async (url, data) => {
   try {
     const response = await axiosInstance.patch(url, data);
     return response.data;

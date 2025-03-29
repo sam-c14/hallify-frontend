@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import DividerWithText from "./DividerWithText";
 import Google from "../assets/icons/google";
 import PasswordInput from "./PasswordInput";
+import { post } from "../utils/axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import Spinner from "./Spinner";
 
 const SignInModalContent = ({ onClose, isSignUp = true }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
   });
+  const [authState, setAuthState] = useState(isSignUp ? "sign-up" : "sign-in");
 
   const handleFormChange = (key, value) => {
     setForm((prev) => {
@@ -19,9 +26,29 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const baseUrl = authState === "sign-up" ? "/auth/signup/" : "/auth/login/";
+
+    try {
+      const response = await post(baseUrl, form);
+      toast.success("Successfully logged in");
+      navigate("/bookings");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error signing you in");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-white p-8 w-full">
-      <h2 className="text-2xl font-bold mb-4">Sign {isSignUp ? "Up" : "In"}</h2>
+    <div className="bg-white py-8 px-5 w-full sm:min-w-[450px]">
+      <h2 className="text-2xl font-bold mb-4">
+        Sign {authState === "sign-up" ? "Up" : "In"}
+      </h2>
       <div className="flex items-center p-2">
         <button
           className="shadow appearance-none border rounded-md w-full px-3 mx-2 py-2 grid place-items-center border-gray-200 hover:bg-purple-500 transition-colors"
@@ -34,51 +61,63 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
         <DividerWithText text={"or"} />
       </div>
 
-      <div className="mb-4">
-        <label
-          htmlFor="text"
-          className="block font-inter text-gray-700 text-sm font-bold mb-2"
-        >
-          Username:
-        </label>
-        <input
-          type="text"
-          id="user_name"
-          value={form.username}
-          onChange={({ target }) => handleFormChange("username", target.value)}
-          className="shadow appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-      </div>
-      {isSignUp && (
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
-            htmlFor="email"
+            htmlFor="text"
             className="block font-inter text-gray-700 text-sm font-bold mb-2"
           >
-            Email:
+            Username:
           </label>
           <input
-            type="email"
-            id="email"
-            value={form.email}
-            onChange={({ target }) => handleFormChange("email", target.value)}
+            type="text"
+            id="user_name"
+            value={form.username}
+            onChange={({ target }) =>
+              handleFormChange("username", target.value)
+            }
             className="shadow appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-      )}
-      <div className="mb-6">
-        <label
-          htmlFor="password"
-          className="block font-inter text-gray-700 text-sm font-bold mb-2"
+        {authState === "sign-up" && (
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block font-inter text-gray-700 text-sm font-bold mb-2"
+            >
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={form.email}
+              onChange={({ target }) => handleFormChange("email", target.value)}
+              className="shadow appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+        )}
+        <div className="mb-6">
+          <label
+            htmlFor="password"
+            className="block font-inter text-gray-700 text-sm font-bold mb-2"
+          >
+            Password:
+          </label>
+          <PasswordInput
+            value={form.password}
+            onChange={({ target }) =>
+              handleFormChange("password", target.value)
+            }
+          />
+        </div>
+        <button
+          className="bg-purple-500 grid place-items-center font-inter hover:bg-purple-700 text-white font-semibold py-2.5 w-full rounded-md focus:outline-none focus:shadow-outline"
+          type="submit"
         >
-          Password:
-        </label>
-        <PasswordInput
-          value={form.password}
-          onChange={({ target }) => handleFormChange("password", target.value)}
-        />
-      </div>
-      <button
+          {loading ? <Spinner size={25} /> : "Sign In"}
+        </button>
+      </form>
+      {/* <button
         type="button" // Use type="button" to prevent form submission
         className="inline-block align-baseline font-normal text-sm text-purple-500 hover:text-purple-800 focus:outline-none mb-4 underline" // Tailwind classes for text button style
         onClick={() => {
@@ -87,31 +126,22 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
         }}
       >
         Forgot password?
-      </button>
-      <div className="flex items-center mb-2">
+      </button> */}
+      <div className="flex gap-x-1 items-center mt-5 justify-center">
+        <span className="font-inter text-[#868C98] mt-0.5">
+          {authState === "sign-up"
+            ? "Already have an account?"
+            : "Don't have an account yet?"}
+        </span>{" "}
         <button
-          className="bg-purple-500 font-inter hover:bg-purple-700 text-white font-semibold py-2.5 w-full rounded-md focus:outline-none focus:shadow-outline"
-          type="button"
+          type="button" // Use type="button" to prevent form submission
+          className="inline-block font-inter align-baseline font-semibold text-sm text-purple-500 hover:scale-105 focus:outline-none underline" // Tailwind classes for text button style
+          onClick={() =>
+            setAuthState(authState === "sign-up" ? "sign-in" : "sign-up")
+          }
         >
-          Sign In
+          {authState === "sign-up" ? "Sign in" : "Create Account"}
         </button>
-      </div>
-      <div className="flex gap-x-1 mt-4">
-        <span className="font-inter">Don't have an account yet?</span>{" "}
-        <div>
-          <button
-            type="button" // Use type="button" to prevent form submission
-            className="inline-block font-inter align-baseline font-semibold text-sm text-purple-500 hover:text-purple-800 focus:outline-none mb-4 underline" // Tailwind classes for text button style
-            onClick={() => {
-              alert(
-                "Forgot password clicked! (Functionality to be implemented)"
-              ); // Placeholder action
-              // In a real app, you'd trigger password reset logic here
-            }}
-          >
-            Create Account.
-          </button>
-        </div>
       </div>
     </div>
   );
