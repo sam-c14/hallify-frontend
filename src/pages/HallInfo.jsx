@@ -169,7 +169,7 @@ const HallInfo = () => {
             </div>
 
             <div className="font-inter border flex flex-col gap-y-4 border-gray-200 shadow-sm rounded-lg sm:px-5 px-3 py-3 mb-5">
-              {data?.sessions
+              {data?.sessions?.length
                 ? data?.sessions.map((session) => (
                     <label
                       key={session.id}
