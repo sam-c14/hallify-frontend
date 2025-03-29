@@ -1,7 +1,9 @@
 import axios from "axios";
 
-// Base API URL (change as needed)
-const API_BASE_URL = "https://hallbackend.onrender.com";
+const API_BASE_URL =
+  import.meta.env.MODE_ENV === "development"
+    ? "/api"
+    : "https://hallify-frontend.vercel.app/api/proxy";
 
 const logoutUser = () => {
   console.log("Session expired. Logging out...");
@@ -15,7 +17,7 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // Include cookies if needed
+  withCredentials: import.meta.env.MODE_ENV === "production",
 });
 
 // **Interceptor for handling 403 errors**
