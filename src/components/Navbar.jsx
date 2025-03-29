@@ -107,19 +107,18 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute items-center top-full left-0 w-full bg-white flex flex-col items-start gap-y-4 p-5 shadow-md md:hidden">
           {navLinks.map(({ icon, text, path }) => (
-            <Link
-              to={path ?? "/"}
-              onClick={() => setIsOpen(false)}
-              key={text}
-              className={`flex items-center gap-x-2 w-fit m-auto py-2 px-4 rounded-lg ${
-                path !== "/" && path === pathname
-                  ? "bg-[#EBE9FE] text-[#6938EF]"
-                  : ""
-              }`}
-            >
-              <span className="text-inherit">{icon}</span>
-              <span className="font-inter text-sm">{text}</span>
-            </Link>
+           <Link
+            to={path ?? "/"}
+            key={text}
+            className={`flex items-center gap-x-2 w-fit m-auto py-2 px-4 rounded-lg ${
+              path !== "/" && path === pathname
+                ? "bg-[#EBE9FE] text-[#6938EF]"
+                : ""
+            } ${!user && text === "Bookings" ? "hidden" : ""}`}
+          >
+            <span className="text-inherit">{icon}</span>
+            <span className="font-inter text-sm">{text}</span>
+          </Link>
           ))}
           <div className="w-full">
             {user ? (
