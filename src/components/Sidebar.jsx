@@ -8,6 +8,12 @@ import { useLocation } from "react-router-dom";
 const Sidebar = ({ isOpen }) => {
   const { pathname } = useLocation();
 
+  const logoutUser = () => {
+    localStorage.clear();
+    const isAdminRoute = window.location.pathname.includes("admin");
+    window.location.href = isAdminRoute ? "/admin/login" : "/";
+  };
+
   return (
     <aside
       className={`fixed left-0 top-0 h-screen bg-white z-20 text-white transition-transform duration-300 lg:w-60 w-64 p-5 border-r 
@@ -28,7 +34,10 @@ const Sidebar = ({ isOpen }) => {
             Bookings
           </span>
         </Link>
-        <button className="hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md p-3 text-left flex items-center gap-x-2">
+        <button
+          onClick={logoutUser}
+          className="hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md p-3 text-left flex items-center gap-x-2"
+        >
           <Exit />
           <span className="sm:text-base text-black text-sm font-inter">
             Log Out
