@@ -5,6 +5,9 @@ import Home from "./pages/Home";
 import HallInfo from "./pages/HallInfo";
 import ManageBookings from "./pages/ManageBookings";
 import ManageFavorites from "./pages/ManageFavorites";
+import Admin from "./layouts/Admin";
+import AdminLogin from "./pages/AdminLogin";
+import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
 
 const App = () => {
@@ -16,6 +19,11 @@ const App = () => {
           <Route path="hall/:id" element={<HallInfo />}></Route>
           <Route path="manage-bookings" element={<ManageBookings />}></Route>
           <Route path="manage-favorites" element={<ManageFavorites />}></Route>
+        </Route>
+        <Route path="/admin" element={<Admin />}>
+          <Route path="login" element={<AdminLogin />}></Route>
+          <Route path="dashboard" element={<Dashboard />}></Route>
+          <Route path="dashboard" element={<Dashboard />}></Route>
         </Route>
         {/* Uncomment and define NotFound component if needed */}
         <Route path="*" element={<NotFound />} />

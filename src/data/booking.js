@@ -26,3 +26,18 @@ export const bookings = [
     sub_total: "2,350,000",
   },
 ];
+
+export const halls = [
+  {
+    id: 1,
+    name: "Luzang Hall A",
+  },
+  {
+    id: 2,
+    name: "Luzang Hall B",
+  },
+  {
+    id: 3,
+    name: "Luzang Hall C",
+  },
+];

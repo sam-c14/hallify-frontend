@@ -1,6 +1,7 @@
 // src/redux/store.js
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import exampleReducer from "./slice/example";
+import authReducer from "./slice/auth";
 
 // Define static reducers
 const staticReducers = {};
@@ -10,6 +11,7 @@ const createRootReducer = () =>
   combineReducers({
     ...staticReducers,
     example: exampleReducer,
+    auth: authReducer,
   });
 
 // Create the store
