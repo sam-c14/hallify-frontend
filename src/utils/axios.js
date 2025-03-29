@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.MODE_ENV === "development"
-    ? "/api"
-    : "https://hallify-frontend.vercel.app/api/proxy";
+const API_BASE_URL = "/api";
 
 const logoutUser = () => {
   console.log("Session expired. Logging out...");
