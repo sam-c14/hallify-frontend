@@ -147,7 +147,7 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <div className="flex justify-center w-full">
+          <div className={`flex justify-center w-full ${!user && "hidden"`}>
             <button
               onClick={logoutUser}
               className="flex items-center gap-x-2 mt-5 hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md text-left flex items-center gap-x-2"
