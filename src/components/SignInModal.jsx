@@ -127,7 +127,13 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
           className="bg-purple-500 grid place-items-center font-inter hover:bg-purple-700 text-white font-semibold py-2.5 w-full rounded-md focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          {loading ? <Spinner size={25} /> : "Sign In"}
+          {loading ? (
+            <Spinner size={25} />
+          ) : authState === "sign-in" ? (
+            "Sign In"
+          ) : (
+            "Sign Up"
+          )}
         </button>
       </form>
       {/* <button
