@@ -73,7 +73,7 @@ const Navbar = () => {
             <span className="font-inter text-sm">{text}</span>
           </Link>
         ))}
-        <div className="w-full min-w-64">
+        <div className={`w-full ${!user && "min-w-64"}`}>
           {user ? (
             <ProfileDropdown logoutUser={logoutUser} user={user} />
           ) : (
