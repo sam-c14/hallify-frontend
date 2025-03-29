@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DividerWithText from "./DividerWithText";
 import Google from "../assets/icons/google";
 import PasswordInput from "./PasswordInput";
-import { post } from "../utils/axios";
+import { post, parseError } from "../utils/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import Spinner from "./Spinner";
@@ -42,13 +42,16 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
         navigate("/manage-bookings");
         onClose();
         dispatch(
-          login({ user: { name: form.username }, token: response.access })
+          login({
+            user: { name: form.username, role: "customer" },
+            token: response.access,
+          })
         );
       }
       console.log(response);
     } catch (error) {
-      console.log(error);
-      toast.error("There was an error signing you in");
+      const errMsg = parseError(error);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }

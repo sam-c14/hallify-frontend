@@ -30,7 +30,10 @@ const ProfileDropdown = ({ user, logoutUser }) => {
       </button>
 
       {showDropdown && (
-        <div className="absolute min-w-40 top-5 bg-white shadow-md rounded-lg">
+        <div className="absolute min-w-52 top-5 -left-20 bg-white shadow-md rounded-lg">
+          <h4 className="font-inter sm:text-sm text-xs font-semibold mb-4">
+            Welcome {user.name}{" "}
+          </h4>
           <button
             onClick={logoutUser}
             className="hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md text-left flex items-center gap-x-2"

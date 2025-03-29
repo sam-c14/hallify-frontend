@@ -71,3 +71,7 @@ export const patch = async (url, data) => {
 
 // Export axios instance if needed for custom requests
 export default axiosInstance;
+
+export const parseError = (e) => {
+  return e.response.data.error;
+};

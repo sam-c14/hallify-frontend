@@ -3,17 +3,19 @@ import PasswordInput from "../components/PasswordInput";
 import { useAppDispatch } from "../redux/store";
 import { login } from "../redux/slice/auth";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import { post, parseError } from "../utils/axios";
+// import { parseError } from "../utils/axios";
 
-const AdminLogin = () => {
+const AdminSignup = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     username: "",
+    email: "",
     password: "",
+    role: "event_manager",
   });
 
   const handleFormChange = (key, value) => {
@@ -29,11 +31,11 @@ const AdminLogin = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await post("auth/login/", form);
+      const response = await post("auth/signup/", form);
       toast.success("Successfully logged in");
       if (authState === "sign-up") setAuthState("sign-in");
       else {
-        navigate("/admin/dashboard");
+        navigate("/admin/login");
         dispatch(
           login({
             user: { name: form.username, role: "admin" },
@@ -55,10 +57,10 @@ const AdminLogin = () => {
       <div className="sm:min-w-[520px] border border-gray-300 rounded-lg shadow-md px-8 py-8">
         <div className="flex flex-col gap-y-2 mb-9 items-center">
           <h3 className="font-inter font-semibold md:text-3xl text-xl">
-            Sign In
+            Event Manager Sign Up
           </h3>
           <p className="font-inter md:text-base text-sm text-gray-400">
-            Instant access to your account
+            Create an account asa an event manager
           </p>
         </div>
         <form onSubmit={handleSubmit} className="mt-5">
@@ -71,11 +73,24 @@ const AdminLogin = () => {
             </label>
             <input
               type="text"
-              id="text"
-              value={form.email}
+              id="text-box"
+              value={form.username}
               onChange={({ target }) =>
                 handleFormChange("username", target.value)
               }
+              className="shadow appearance-none border border-gray-300 rounded-md w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <label
+              htmlFor="email"
+              className="inline-block mt-4 block font-inter text-gray-700 text-sm font-semibold mb-2"
+            >
+              Email Address:
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={form.email}
+              onChange={({ target }) => handleFormChange("email", target.value)}
               className="shadow appearance-none border border-gray-300 rounded-md w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
@@ -107,4 +122,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default AdminSignup;

@@ -7,6 +7,7 @@ import ManageBookings from "./pages/ManageBookings";
 import ManageFavorites from "./pages/ManageFavorites";
 import Admin from "./layouts/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import AdminSignup from "./pages/AdminSignUp";
 import Dashboard from "./pages/Dashboard";
 import { ToastContainer } from "react-toastify";
 
@@ -22,6 +23,7 @@ const App = () => {
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="login" element={<AdminLogin />}></Route>
+          <Route path="create" element={<AdminSignup />}></Route>
           <Route path="dashboard" element={<Dashboard />}></Route>
           <Route path="dashboard" element={<Dashboard />}></Route>
         </Route>

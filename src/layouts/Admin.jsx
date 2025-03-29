@@ -6,8 +6,10 @@ import Sidebar from "../components/Sidebar";
 import { useAppSelector } from "../redux/store";
 
 const Admin = () => {
-  const { token } = useAppSelector((state) => state.auth);
+  const { token, user } = useAppSelector((state) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  console.log(user);
 
   return (
     <div className="flex">
@@ -30,7 +32,9 @@ const Admin = () => {
         )}
 
         {/* Page Content */}
-        <div className="sm:py-20 py-10 px-4 pl-4 lg:pl-64 w-full">
+        <div
+          className={`sm:py-20 py-10 px-4 pl-4 w-full ${token && "lg:pl-64"}`}
+        >
           <Outlet />
         </div>
       </div>

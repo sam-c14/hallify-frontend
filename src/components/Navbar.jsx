@@ -73,11 +73,11 @@ const Navbar = () => {
             <span className="font-inter text-sm">{text}</span>
           </Link>
         ))}
-        <div>
+        <div className="w-full min-w-64">
           {user ? (
             <ProfileDropdown logoutUser={logoutUser} user={user} />
           ) : (
-            <>
+            <div className="flex sm:flex-row flex-col gap-x-4">
               <button
                 className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
                 onClick={() => openAuthModal("sign-in")}
@@ -90,7 +90,7 @@ const Navbar = () => {
               >
                 Get Started
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -131,7 +131,7 @@ const Navbar = () => {
                 />
               </div>
             ) : (
-              <div className="flex flex-col gap-y-5">
+              <div className="flex sm:flex-row flex-col gap-y-5">
                 <button
                   className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
                   onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
@@ -147,15 +147,17 @@ const Navbar = () => {
               </div>
             )}
           </div>
-          <button
-            onClick={logoutUser}
-            className="inline-block mt-5 hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md text-left flex items-center gap-x-2"
-          >
-            <Exit />
-            <span className="sm:text-base text-black text-sm font-inter">
-              Log Out
-            </span>
-          </button>
+          <div className="flex justify-center w-full">
+            <button
+              onClick={logoutUser}
+              className="flex items-center gap-x-2 mt-5 hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md text-left flex items-center gap-x-2"
+            >
+              <Exit />
+              <span className="sm:text-base text-black text-sm font-inter">
+                Log Out
+              </span>
+            </button>
+          </div>
         </div>
       )}
 
