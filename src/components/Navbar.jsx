@@ -19,7 +19,7 @@ import ProfileDropdown from "./ProfileDropdown";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false); // NEW STATE: for Sign-in Modal visibility
-  const [showDropdown, setShowDropdown] = useState(false);
+  // const [showDropdown, setShowDropdown] = useState(false);
   const [authState, setAuthState] = useState("sign-up");
   const user = useAppSelector((state) => state.auth.user);
 
@@ -67,7 +67,7 @@ const Navbar = () => {
               path !== "/" && path === pathname
                 ? "bg-[#EBE9FE] text-[#6938EF]"
                 : ""
-            }`}
+            } ${!user && text === "Bookings" ? "hidden" : ""}`}
           >
             <span className="text-inherit">{icon}</span>
             <span className="font-inter text-sm">{text}</span>
