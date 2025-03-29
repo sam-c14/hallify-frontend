@@ -1,8 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import Checkbox from "../assets/icons/checkbox";
+import StatusBadge from "./Status";
 
-const Table = ({ headers, data, onActionClick }) => {
+const Table = ({
+  headers,
+  data,
+  disableClick,
+  route = null,
+  checkStatus = false,
+}) => {
   const formatHeaderKey = (header) => header.toLowerCase().replace(/\s+/g, "_");
+  const navigate = useNavigate();
 
   return (
     <div className="overflow-x-auto">
@@ -62,6 +71,12 @@ const Table = ({ headers, data, onActionClick }) => {
                         />
                         <p className="font-inter">{row[key].text}</p>
                       </div>
+                    ) : key === "status" ? (
+                      <StatusBadge status={row[key]} />
+                    ) : key === "paid" ? (
+                      <StatusBadge
+                        status={row[key] ? "successful" : "failed"}
+                      />
                     ) : (
                       row[key]
                     )}
@@ -76,7 +91,17 @@ const Table = ({ headers, data, onActionClick }) => {
                 }`}
               >
                 <button
-                  onClick={() => onActionClick(row)}
+                  onClick={() =>
+                    !disableClick &&
+                    navigate(
+                      checkStatus
+                        ? row["status"]?.toLowerCase?.() === "pending" &&
+                            `/admin/bookings/approve-reject/${row.id}`
+                        : route
+                        ? `${route}/${row.id}`
+                        : `/admin/bookings/${row.id}`
+                    )
+                  }
                   className="p-2 rounded-full"
                 >
                   <svg

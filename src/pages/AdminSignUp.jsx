@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PasswordInput from "../components/PasswordInput";
 import { useAppDispatch } from "../redux/store";
-import { login } from "../redux/slice/auth";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import Spinner from "../components/Spinner";
 import { post, parseError } from "../utils/axios";
@@ -32,17 +32,16 @@ const AdminSignup = () => {
     setLoading(true);
     try {
       const response = await post("auth/signup/", form);
-      toast.success("Successfully logged in");
-      if (authState === "sign-up") setAuthState("sign-in");
-      else {
-        navigate("/admin/login");
-        dispatch(
-          login({
-            user: { name: form.username, role: "admin" },
-            token: response.access,
-          })
-        );
-      }
+      toast.success(
+        "Successfully signed up, Please login to access your dashboard"
+      );
+      navigate("/admin/login");
+      //   dispatch(
+      //     login({
+      //       user: { name: form.username, role: "admin" },
+      //       token: response.access,
+      //     })
+      //   );
       console.log(response);
     } catch (error) {
       const errMsg = parseError(error);
@@ -60,7 +59,7 @@ const AdminSignup = () => {
             Event Manager Sign Up
           </h3>
           <p className="font-inter md:text-base text-sm text-gray-400">
-            Create an account asa an event manager
+            Create an account as an event manager
           </p>
         </div>
         <form onSubmit={handleSubmit} className="mt-5">
@@ -75,6 +74,7 @@ const AdminSignup = () => {
               type="text"
               id="text-box"
               value={form.username}
+              disabled={loading}
               onChange={({ target }) =>
                 handleFormChange("username", target.value)
               }
@@ -90,6 +90,7 @@ const AdminSignup = () => {
               type="email"
               id="email"
               value={form.email}
+              disabled={loading}
               onChange={({ target }) => handleFormChange("email", target.value)}
               className="shadow appearance-none border border-gray-300 rounded-md w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -103,6 +104,7 @@ const AdminSignup = () => {
             </label>
             <PasswordInput
               value={form.password}
+              disabled={loading}
               onChange={({ target }) =>
                 handleFormChange("password", target.value)
               }

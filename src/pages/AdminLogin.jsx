@@ -31,16 +31,13 @@ const AdminLogin = () => {
     try {
       const response = await post("auth/login/", form);
       toast.success("Successfully logged in");
-      if (authState === "sign-up") setAuthState("sign-in");
-      else {
-        navigate("/admin/dashboard");
-        dispatch(
-          login({
-            user: { name: form.username, role: "admin" },
-            token: response.access,
-          })
-        );
-      }
+      navigate("/admin/dashboard");
+      dispatch(
+        login({
+          user: { name: form.username, role: "admin" },
+          token: response.access,
+        })
+      );
       console.log(response);
     } catch (error) {
       const errMsg = parseError(error);
@@ -73,6 +70,7 @@ const AdminLogin = () => {
               type="text"
               id="text"
               value={form.email}
+              disabled={loading}
               onChange={({ target }) =>
                 handleFormChange("username", target.value)
               }
@@ -88,6 +86,7 @@ const AdminLogin = () => {
             </label>
             <PasswordInput
               value={form.password}
+              disabled={loading}
               onChange={({ target }) =>
                 handleFormChange("password", target.value)
               }
@@ -95,6 +94,7 @@ const AdminLogin = () => {
           </div>
           <div className="flex items-center mb-2">
             <button
+              disabled={loading}
               className="flex justify-center bg-purple-500 font-inter hover:bg-purple-700 text-white font-semibold py-2.5 w-full rounded-md focus:outline-none focus:shadow-outline"
               type="submit"
             >

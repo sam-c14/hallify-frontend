@@ -17,11 +17,27 @@ const axiosInstance = axios.create({
   withCredentials: import.meta.env.MODE_ENV === "production",
 });
 
-// **Interceptor for handling 403 errors**
+// ✅ Request Interceptor (Attach Token Before Request)
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    // console.log("Token being attached:", token);
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// ✅ Response Interceptor (Handle 403 Errors)
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 403) {
+      console.error("Unauthorized - Logging out user...");
       logoutUser(); // Call logout function
     }
     return Promise.reject(error);

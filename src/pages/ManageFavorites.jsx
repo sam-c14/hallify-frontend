@@ -32,13 +32,16 @@ const ManageFavorites = () => {
           </div>
         </div>
       )}
-      <button
+      <p className="text-purple-500 font-semibold sm:text-lg text-base text-center">
+        This feature is coming soon
+      </p>
+      {/* <button
         onClick={() => setHasFavorites(!hasFavorites)}
         title="For UAT, will be removed upon api integration"
         className="absolute top-full right-5 font-inter bg-purple-600 rounded-full text-white hover:scale-105 py-2.5 px-5"
       >
         Toggle Favorites
-      </button>
+      </button> */}
     </div>
   );
 };

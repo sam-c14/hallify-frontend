@@ -3,13 +3,29 @@ import EmptyData from "../components/EmptyData";
 import NoBookings from "../assets/images/no-bookings.png";
 import BookingsCard from "../components/BookingsCard";
 import { bookings } from "../data/booking";
+import useFetch from "../utils/fetch";
+import Spinner from "../components/Spinner";
 
 const ManageBookings = () => {
-  const [hasBooking, setHasBooking] = useState(false);
+  const { data, error, isLoading } = useFetch("/bookings/history/");
+  // const [hasBooking, setHasBooking] = useState(false);
+
+  if (isLoading)
+    return (
+      <div className="grid place-items-center min-h-screen">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <p className="text-red-500 text-center font-inter font-semibold">
+        Error: {error.message}
+      </p>
+    );
 
   return (
     <div className="relative">
-      {!hasBooking ? (
+      {!data?.length ? (
         <EmptyData
           baseRoute="Home"
           childRoute="Manage Bookings"

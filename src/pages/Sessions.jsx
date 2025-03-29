@@ -2,7 +2,7 @@ import React from "react";
 import Table from "../components/Table";
 import { venues } from "../data/venues";
 
-const Dashboard = () => {
+const Sessions = () => {
   const headers = [
     "Name",
     "Guest Number",
@@ -29,10 +29,10 @@ const Dashboard = () => {
         Halls
       </h2>
       <div className="pr-10">
-        <Table headers={headers} data={data} />
+        <Table headers={headers} data={data} route="/admin/sessions-list" />
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Sessions;

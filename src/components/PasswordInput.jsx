@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import Eye from "../assets/icons/eye";
 import EyeSlash from "../assets/icons/eye-slash";
 
-const PasswordInput = ({ value, onChange, placeholder = "Enter password" }) => {
+const PasswordInput = ({
+  value,
+  onChange,
+  placeholder = "Enter password",
+  disabled = false,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -11,6 +16,7 @@ const PasswordInput = ({ value, onChange, placeholder = "Enter password" }) => {
         type={showPassword ? "text" : "password"}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         placeholder={placeholder}
         className="w-full p-2 pr-10 bg-transparent outline-none focus:ring-0 focus:outline-none"
       />

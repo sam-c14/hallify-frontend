@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router";
 import Navbar from "../components/Navbar";
 import AdminNavbar from "../components/AdminNavbar";
 import Sidebar from "../components/Sidebar";
 import { useAppSelector } from "../redux/store";
+import { useNavigate } from "react-router";
 
 const Admin = () => {
   const { token, user } = useAppSelector((state) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  console.log(user);
+  useEffect(() => {
+    if (token && user.role !== "admin") navigate("/");
+  }, []);
+
+  //   console.log(user);
 
   return (
     <div className="flex">

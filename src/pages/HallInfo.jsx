@@ -6,13 +6,36 @@ import VenueList from "../components/VenueList";
 import Checkbox from "../components/Checkbox";
 import CustomDatePicker from "../components/CustomDatePicker";
 import Error from "../assets/icons/error";
+import useFetch from "../utils/fetch";
+import { useParams } from "react-router";
+import { post, parseError } from "../utils/axios";
+import Spinner from "../components/Spinner";
 
 const HallInfo = () => {
   const [bookingForm, setBookingForm] = useState({
     session: [],
     start_date: "",
     end_date: "",
+    event_name: "",
   });
+  const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const { data, error, isLoading } = useFetch(`bookings/halls/${params.id}`);
+
+  // console.log(data);
+
+  if (isLoading)
+    return (
+      <div className="grid place-items-center min-h-screen">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <p className="text-red-500 text-center font-inter font-semibold">
+        Error: {error.message}
+      </p>
+    );
 
   const handleBookingFormChange = (key, value) => {
     setBookingForm((prev) => {
@@ -23,21 +46,35 @@ const HallInfo = () => {
     });
   };
 
-  const updateSessionArray = (value, sessionType) => {
-    const sessions = bookingForm.session;
-    if (value) {
-      sessions.push(sessionType);
-      handleBookingFormChange("session", sessions);
-    } else
-      handleBookingFormChange(
-        "session",
-        bookingForm.session.filter((value) => value !== sessionType)
-      );
+  const updateSessionArray = (isChecked, sessionType) => {
+    setBookingForm((prev) => {
+      const newSessions = isChecked
+        ? [...prev.session, sessionType] // ✅ Add session
+        : prev.session.filter((s) => s !== sessionType); // ✅ Remove session
+
+      return { ...prev, session: newSessions };
+    });
   };
 
   const isSubmitDisabled = () => {
     const { end_date, session, start_date } = bookingForm;
     return !end_date || !start_date || session.length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await post("bookings/create/", bookingForm);
+      toast.success("Hall successfully booked!");
+      // navigate("/admin/sessions");
+      console.log(response);
+    } catch (error) {
+      const errMsg = parseError(error);
+      toast.error(errMsg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +100,7 @@ const HallInfo = () => {
         <div>
           <div className="flex flex-col gap-y-4">
             <h3 className="font-inter sm:text-3xl text-xl font-semibold">
-              {venueInformation.name}
+              {venues.find((hall) => hall.id === Number(params.id)).name}
             </h3>
             <div className="flex items-center gap-x-4">
               <div className="flex items-center gap-x-3">
@@ -78,12 +115,12 @@ const HallInfo = () => {
               <div className="flex items-center gap-x-3">
                 <Guests />
                 <p className="text-gray-500 font-inter sm:text-sm text-xs">
-                  {venueInformation.guestCapacity} Guests
+                  {data?.capacity} Guests
                 </p>
               </div>
             </div>
             <p className="font-semibold font-inter sm:text-base text-sm">
-              NGN {venueInformation.rate}
+              NGN {data?.price_per_session}
             </p>
           </div>
           <div className="mt-10">
@@ -91,12 +128,14 @@ const HallInfo = () => {
               Hall Description
             </h3>
             <p className="font-inter text-gray-500 md:w-10/12">
-              {venueInformation.hallDescription}
+              {data?.description}. Please note that every hall has a size limit
+              and also can be maxed out pending the umber of bookings for that
+              hall at the time it is requested.
             </p>
           </div>
           <div className="mt-20">
             <VenueList
-              venues={venues.slice(0, 2)}
+              venues={venues.filter((venue) => venue.id !== Number(params.id))}
               xlCount={4}
               title="Other Hotel Halls"
             />
@@ -106,32 +145,46 @@ const HallInfo = () => {
           <h3 className="font-inter sm:text-2xl text-lg mb-7 font-semibold">
             Booking Details
           </h3>
-          <form action="">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-5">
+              <label
+                htmlFor="email"
+                className="block font-inter text-gray-700 text-sm font-semibold mb-2"
+              >
+                Event Name:
+              </label>
+              <input
+                type="text"
+                id="text"
+                value={bookingForm.event_name}
+                // disabled={loading}
+                onChange={({ target }) =>
+                  handleBookingFormChange("event_name", target.value)
+                }
+                className="shadow appearance-none border border-gray-300 rounded-md w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+
             <div className="border flex flex-col gap-y-4 border-gray-200 shadow-sm rounded-lg sm:px-5 px-3 py-3 mb-5">
-              <label
-                htmlFor="morning-session"
-                className="flex items-center gap-x-3"
-              >
-                <Checkbox
-                  id="morning-session"
-                  name="session"
-                  value={bookingForm.session.includes("morning")}
-                  onChange={(value) => updateSessionArray(value, "morning")}
-                />
-                <span className="font-inter">Morning Session</span>
-              </label>
-              <label
-                htmlFor="evening-session"
-                className="flex items-center gap-x-3"
-              >
-                <Checkbox
-                  id="evening-session"
-                  name="session"
-                  value={bookingForm.session.includes("evening")}
-                  onChange={(value) => updateSessionArray(value, "evening")}
-                />
-                <span className="font-inter">Evening Session</span>
-              </label>
+              {data?.sessions.map((session) => (
+                <label
+                  key={session.id}
+                  htmlFor={`session-${session.id}`}
+                  className="flex items-center gap-x-3"
+                >
+                  <Checkbox
+                    id={`session-${session.id}`}
+                    name="session"
+                    value={bookingForm.session.includes(session.id)}
+                    onChange={(value) => updateSessionArray(value, session.id)}
+                  />
+                  <span className="font-inter">
+                    {session.session_type.charAt(0).toUpperCase() +
+                      session.session_type.slice(1)}{" "}
+                    Session - {session.date}
+                  </span>
+                </label>
+              ))}
             </div>
             <div className="border border-gray-200 flex flex-col gap-y-4 shadow-sm rounded-lg sm:px-5 px-3 py-5 mb-5">
               <CustomDatePicker
@@ -160,7 +213,7 @@ const HallInfo = () => {
                 className="w-full font-inter py-3.5 rounded-xl text-center sm:text-base text-sm disabled:bg-[#F6F8FA] disabled:text-[#CDD0D5] text-white bg-purple-600"
                 disabled={isSubmitDisabled()}
               >
-                Continue
+                {loading ? <Spinner size={25} /> : "Continue"}
               </button>
             </div>
           </form>

@@ -4,6 +4,7 @@ import BrandLogo from "../assets/icons/brand-logo";
 import Crown from "../assets/icons/crown";
 import Exit from "../assets/icons/exit";
 import { useLocation } from "react-router-dom";
+import SessionIcon from "../assets/icons/session";
 
 const Sidebar = ({ isOpen }) => {
   const { pathname } = useLocation();
@@ -20,18 +21,31 @@ const Sidebar = ({ isOpen }) => {
         lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       <nav className="flex flex-col gap-6">
-        <Link to="/" className="inline-block mb-5 mt-3">
+        <Link to="/admin/dashboard" className="inline-block mb-5 mt-3">
           <BrandLogo />
         </Link>
         <Link
-          to="/admin/bookings"
+          to="/admin/dashboard"
           className={`hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md flex items-center gap-x-2 ${
-            pathname === "/admin/dashboard" && "bg-[#F6F8FA] font-semibold"
+            (pathname === "/admin/dashboard" ||
+              pathname.includes("bookings")) &&
+            "bg-[#F6F8FA] font-semibold"
           }`}
         >
           <Crown />
           <span className="sm:text-base text-black text-sm font-inter">
-            Bookings
+            Dashboard
+          </span>
+        </Link>
+        <Link
+          to="/admin/sessions"
+          className={`hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md flex items-center gap-x-2 ${
+            pathname.includes("session") && "bg-[#F6F8FA] font-semibold"
+          }`}
+        >
+          <SessionIcon />
+          <span className="sm:text-base text-black text-sm font-inter">
+            Session
           </span>
         </Link>
         <button

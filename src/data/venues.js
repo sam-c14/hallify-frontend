@@ -1,8 +1,8 @@
 import HallA from "../assets/images/hall-a.png";
 import HallB from "../assets/images/hall-b.png";
 import HallC from "../assets/images/hall-c.png";
-import HallD from "../assets/images/hall-d.png";
-import HallE from "../assets/images/hall-e.png";
+// import HallD from "../assets/images/hall-d.png";
+// import HallE from "../assets/images/hall-e.png";
 import HallImg1 from "../assets/images/hall-img-1.png";
 import HallImg2 from "../assets/images/hall-img-2.png";
 import HallImg3 from "../assets/images/hall-img-3.png";
@@ -18,48 +18,48 @@ export const venues = [
     starCount: "4",
     reviewCount: "25",
     guestCapacity: "200-250",
-    rate: "329,590/Hour",
+    rate: "250,000/Session",
   },
   {
     id: 2,
     src: HallB,
     location: "Victoria Island, Lagos",
-    name: "Hall A",
+    name: "Hall B",
     starCount: "4",
     reviewCount: "25",
     guestCapacity: "200-250",
-    rate: "329,590/Hour",
+    rate: "200,000/Session",
   },
   {
     id: 3,
     src: HallC,
     location: "Victoria Island, Lagos",
-    name: "Hall A",
+    name: "Hall C",
     starCount: "4",
     reviewCount: "25",
     guestCapacity: "200-250",
-    rate: "329,590/Hour",
+    rate: "300,000/Session",
   },
-  {
-    id: 4,
-    src: HallD,
-    location: "Victoria Island, Lagos",
-    name: "Hall A",
-    starCount: "4",
-    reviewCount: "25",
-    guestCapacity: "200-250",
-    rate: "329,590/Hour",
-  },
-  {
-    id: 5,
-    src: HallE,
-    location: "Victoria Island, Lagos",
-    name: "Hall A",
-    starCount: "4",
-    reviewCount: "25",
-    guestCapacity: "200-250",
-    rate: "329,590/Hour",
-  },
+  // {
+  //   id: 4,
+  //   src: HallD,
+  //   location: "Victoria Island, Lagos",
+  //   name: "Hall A",
+  //   starCount: "4",
+  //   reviewCount: "25",
+  //   guestCapacity: "200-250",
+  //   rate: "329,590/Hour",
+  // },
+  // {
+  //   id: 5,
+  //   src: HallE,
+  //   location: "Victoria Island, Lagos",
+  //   name: "Hall A",
+  //   starCount: "4",
+  //   reviewCount: "25",
+  //   guestCapacity: "200-250",
+  //   rate: "329,590/Hour",
+  // },
 ];
 
 export const venueInformation = {

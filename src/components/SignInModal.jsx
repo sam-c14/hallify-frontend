@@ -86,6 +86,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
             type="text"
             id="user_name"
             value={form.username}
+            disabled={loading}
             onChange={({ target }) =>
               handleFormChange("username", target.value)
             }
@@ -104,6 +105,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
               type="email"
               id="email"
               value={form.email}
+              disabled={loading}
               onChange={({ target }) => handleFormChange("email", target.value)}
               className="shadow appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -117,6 +119,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
             Password:
           </label>
           <PasswordInput
+            disabled={loading}
             value={form.password}
             onChange={({ target }) =>
               handleFormChange("password", target.value)
