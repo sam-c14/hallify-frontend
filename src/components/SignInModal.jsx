@@ -6,10 +6,13 @@ import { post } from "../utils/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import Spinner from "./Spinner";
+import { login } from "../redux/slice/auth";
+import { useAppDispatch } from "../redux/store";
 
 const SignInModalContent = ({ onClose, isSignUp = true }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -34,7 +37,14 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
     try {
       const response = await post(baseUrl, form);
       toast.success("Successfully logged in");
-      navigate("/bookings");
+      if (authState === "sign-up") setAuthState("sign-in");
+      else {
+        navigate("/manage-bookings");
+        onClose();
+        dispatch(
+          login({ user: { name: form.username }, token: response.access })
+        );
+      }
       console.log(response);
     } catch (error) {
       console.log(error);

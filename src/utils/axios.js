@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL = "https://hallbackend.onrender.com/api";
 
 const logoutUser = () => {
   console.log("Session expired. Logging out...");
@@ -8,7 +8,7 @@ const logoutUser = () => {
   const isAdminRoute = window.location.pathname.includes("admin");
   window.location.href = isAdminRoute ? "/admin/login" : "/";
 };
-// Create an Axios instance
+
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

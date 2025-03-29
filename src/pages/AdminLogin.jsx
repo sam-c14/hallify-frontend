@@ -3,10 +3,12 @@ import PasswordInput from "../components/PasswordInput";
 import { useAppDispatch } from "../redux/store";
 import { login } from "../redux/slice/auth";
 import { useNavigate } from "react-router";
+import Spinner from "../components/Spinner";
 
 const AdminLogin = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -21,10 +23,28 @@ const AdminLogin = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login({ user: { name: "Hog" }, token: "some-token" }));
-    navigate("/admin/dashboard");
+    try {
+      const response = await post(baseUrl, form);
+      toast.success("Successfully logged in");
+      if (authState === "sign-up") setAuthState("sign-in");
+      else {
+        navigate("/admin/dashboard");
+        dispatch(
+          login({
+            user: { name: form.username, role: "admin" },
+            token: response.access,
+          })
+        );
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error("There was an error signing you in");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -73,7 +93,7 @@ const AdminLogin = () => {
               className="bg-purple-500 font-inter hover:bg-purple-700 text-white font-semibold py-2.5 w-full rounded-md focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Sign In
+              {loading ? <Spinner size={25} /> : "Sign In"}
             </button>
           </div>
         </form>

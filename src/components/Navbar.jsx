@@ -9,13 +9,21 @@ import XMark from "../assets/icons/x-mark";
 import { useLocation } from "react-router";
 import ModalWrapper from "../components/ModalWrapper";
 import SignInModalContent from "./SignInModal";
+import Avatar from "./Avatar";
+import { useAppSelector } from "../redux/store";
+import Exit from "../assets/icons/exit";
+import ProfileDropdown from "./ProfileDropdown";
 // import ModalWrapper from "./path/to/ModalWrapper"; // You will handle the import path
 // import other icons and components (NigerianFlag, Favorites, Bookings, BrandLogo, Menu, XMark, Link) - assuming these are already correctly imported in your actual project.
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false); // NEW STATE: for Sign-in Modal visibility
+  const [showDropdown, setShowDropdown] = useState(false);
   const [authState, setAuthState] = useState("sign-up");
+  const user = useAppSelector((state) => state.auth.user);
+
+  // console.log(user);
 
   // Function to open the Sign-in Modal
   const openAuthModal = (authState) => {
@@ -29,6 +37,12 @@ const Navbar = () => {
   };
 
   const { pathname } = useLocation();
+
+  const logoutUser = () => {
+    localStorage.clear();
+    const isAdminRoute = window.location.pathname.includes("admin");
+    window.location.href = isAdminRoute ? "/admin/login" : "/";
+  };
 
   const navLinks = [
     { icon: <NigerianFlag />, text: "NGN" },
@@ -59,18 +73,26 @@ const Navbar = () => {
             <span className="font-inter text-sm">{text}</span>
           </Link>
         ))}
-        <button
-          className="rounded-xl lg:text-base text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md hover:scale-105 transition-all"
-          onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
-        >
-          Sign In
-        </button>
-        <button
-          onClick={() => openAuthModal("sign-up")}
-          className="rounded-xl lg:text-base text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white hover:text-purple-500 hover:bg-transparent transition-all"
-        >
-          Get Started
-        </button>
+        <div>
+          {user ? (
+            <ProfileDropdown logoutUser={logoutUser} user={user} />
+          ) : (
+            <>
+              <button
+                className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
+                onClick={() => openAuthModal("sign-in")}
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => openAuthModal("sign-up")}
+                className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all"
+              >
+                Get Started
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Mobile Menu Icon */}
@@ -87,6 +109,7 @@ const Navbar = () => {
           {navLinks.map(({ icon, text, path }) => (
             <Link
               to={path ?? "/"}
+              onClick={() => setIsOpen(false)}
               key={text}
               className={`flex items-center gap-x-2 w-fit m-auto py-2 px-4 rounded-lg ${
                 path !== "/" && path === pathname
@@ -98,17 +121,40 @@ const Navbar = () => {
               <span className="font-inter text-sm">{text}</span>
             </Link>
           ))}
+          <div className="w-full">
+            {user ? (
+              <div className="flex justify-center w-full">
+                <Avatar
+                  name={user.name}
+                  size="w-8 h-8"
+                  textSize="sm:text-sm text-xs"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-y-5">
+                <button
+                  className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
+                  onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => openAuthModal("sign-up")}
+                  className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all"
+                >
+                  Get Started
+                </button>
+              </div>
+            )}
+          </div>
           <button
-            className="rounded-xl text-sm shadow-none px-3.5 py-2.5 border border-[#E2E4E9] font-inter shadow-md w-full hover:scale-105 transition-all"
-            onClick={() => openAuthModal("sign-in")} // ADDED: openAuthModal on click
+            onClick={logoutUser}
+            className="inline-block mt-5 hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md text-left flex items-center gap-x-2"
           >
-            Sign In
-          </button>
-          <button
-            onClick={() => openAuthModal("sign-up")}
-            className="rounded-xl text-sm px-5 py-2.5 border border-purple-500 font-inter shadow-md bg-purple-500 text-white w-full hover:text-purple-500 hover:bg-transparent transition-all"
-          >
-            Get Started
+            <Exit />
+            <span className="sm:text-base text-black text-sm font-inter">
+              Log Out
+            </span>
           </button>
         </div>
       )}
