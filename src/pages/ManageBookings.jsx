@@ -2,14 +2,15 @@ import { useState } from "react";
 import EmptyData from "../components/EmptyData";
 import NoBookings from "../assets/images/no-bookings.png";
 import BookingsCard from "../components/BookingsCard";
-import { bookings } from "../data/booking";
+// import { bookings } from "../data/booking";
 import useFetch from "../utils/fetch";
 import Spinner from "../components/Spinner";
 
 const ManageBookings = () => {
-  const { data, error, isLoading } = useFetch("/bookings/history/");
+  const { data: bookings, error, isLoading } = useFetch("/bookings/history/");
   // const [hasBooking, setHasBooking] = useState(false);
 
+  // console.log(data);
   if (isLoading)
     return (
       <div className="grid place-items-center min-h-screen">
@@ -43,22 +44,19 @@ const ManageBookings = () => {
             Manage Bookings
           </h4>
           <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 mt-2 gap-5">
-            {bookings.map(
-              (
-                { date_range, guest_count, hall_name, status, sub_total, img },
-                index
-              ) => (
-                <BookingsCard
-                  key={index}
-                  date_range={date_range}
-                  guest_count={guest_count}
-                  hall_name={hall_name}
-                  img={img}
-                  status={status}
-                  sub_total={sub_total}
-                />
-              )
-            )}
+            {bookings.map((booking, index) => (
+              <BookingsCard
+                key={index}
+                date={booking?.date}
+                id={booking?.id}
+                session={booking?.session}
+                // guest_count={guest_count}
+                event_name={booking?.event_name}
+                img={img}
+                status={booking?.status}
+                sub_total={booking?.transaction_ref}
+              />
+            ))}
           </div>
         </div>
       )}

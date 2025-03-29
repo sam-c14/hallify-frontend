@@ -8,18 +8,20 @@ import CustomDatePicker from "../components/CustomDatePicker";
 import Error from "../assets/icons/error";
 import useFetch from "../utils/fetch";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
 import { post, parseError } from "../utils/axios";
 import Spinner from "../components/Spinner";
 
 const HallInfo = () => {
+  const params = useParams();
   const [bookingForm, setBookingForm] = useState({
-    session: [],
-    start_date: "",
-    end_date: "",
+    session_ids: [],
+    date: "",
+    // end_date: "",
     event_name: "",
+    hall_id: Number(params.id),
   });
   const [loading, setLoading] = useState(false);
-  const params = useParams();
   const { data, error, isLoading } = useFetch(`bookings/halls/${params.id}`);
 
   // console.log(data);
@@ -49,16 +51,16 @@ const HallInfo = () => {
   const updateSessionArray = (isChecked, sessionType) => {
     setBookingForm((prev) => {
       const newSessions = isChecked
-        ? [...prev.session, sessionType] // ✅ Add session
+        ? [...prev.session_ids, sessionType] // ✅ Add session
         : prev.session.filter((s) => s !== sessionType); // ✅ Remove session
 
-      return { ...prev, session: newSessions };
+      return { ...prev, session_ids: newSessions };
     });
   };
 
   const isSubmitDisabled = () => {
-    const { end_date, session, start_date } = bookingForm;
-    return !end_date || !start_date || session.length === 0;
+    const { end_date, session_ids, date } = bookingForm;
+    return !end_date || !date || session_ids.length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -71,6 +73,7 @@ const HallInfo = () => {
       console.log(response);
     } catch (error) {
       const errMsg = parseError(error);
+      console.log(errMsg);
       toast.error(errMsg);
     } finally {
       setLoading(false);
@@ -165,42 +168,48 @@ const HallInfo = () => {
               />
             </div>
 
-            <div className="border flex flex-col gap-y-4 border-gray-200 shadow-sm rounded-lg sm:px-5 px-3 py-3 mb-5">
-              {data?.sessions.map((session) => (
-                <label
-                  key={session.id}
-                  htmlFor={`session-${session.id}`}
-                  className="flex items-center gap-x-3"
-                >
-                  <Checkbox
-                    id={`session-${session.id}`}
-                    name="session"
-                    value={bookingForm.session.includes(session.id)}
-                    onChange={(value) => updateSessionArray(value, session.id)}
-                  />
-                  <span className="font-inter">
-                    {session.session_type.charAt(0).toUpperCase() +
-                      session.session_type.slice(1)}{" "}
-                    Session - {session.date}
-                  </span>
-                </label>
-              ))}
+            <div className="font-inter border flex flex-col gap-y-4 border-gray-200 shadow-sm rounded-lg sm:px-5 px-3 py-3 mb-5">
+              {data?.sessions
+                ? data?.sessions.map((session) => (
+                    <label
+                      key={session.id}
+                      htmlFor={`session-${session.id}`}
+                      className={`flex items-center gap-x-3 ${
+                        !session.is_booked && "hidden"
+                      }`}
+                    >
+                      <Checkbox
+                        id={`session-${session.id}`}
+                        name="session"
+                        value={bookingForm.session_ids.includes(session.id)}
+                        onChange={(value) =>
+                          updateSessionArray(value, session.id)
+                        }
+                      />
+                      <span className="font-inter">
+                        {session.session_type.charAt(0).toUpperCase() +
+                          session.session_type.slice(1)}{" "}
+                        Session - {session.date}
+                      </span>
+                    </label>
+                  ))
+                : "No sessions added for this hall"}
             </div>
             <div className="border border-gray-200 flex flex-col gap-y-4 shadow-sm rounded-lg sm:px-5 px-3 py-5 mb-5">
               <CustomDatePicker
-                label="Start Date"
-                date={bookingForm.start_date}
+                label="Date"
+                date={bookingForm.date}
                 onDateChange={(value) =>
-                  handleBookingFormChange("start_date", value)
+                  handleBookingFormChange("date", value[0])
                 }
               />
-              <CustomDatePicker
+              {/* <CustomDatePicker
                 label="End Date"
                 date={bookingForm.end_date}
                 onDateChange={(value) =>
                   handleBookingFormChange("end_date", value)
                 }
-              />
+              /> */}
             </div>
             <div className="flex items-center font-inter gap-x-4 bg-[#FDEDF0] my-5 py-2.5 rounded-xl px-4">
               <Error />
@@ -210,7 +219,7 @@ const HallInfo = () => {
             </div>
             <div>
               <button
-                className="w-full font-inter py-3.5 rounded-xl text-center sm:text-base text-sm disabled:bg-[#F6F8FA] disabled:text-[#CDD0D5] text-white bg-purple-600"
+                className="w-full flex justify-center font-inter py-3.5 rounded-xl text-center sm:text-base text-sm disabled:bg-[#F6F8FA] disabled:text-[#CDD0D5] text-white bg-purple-600"
                 disabled={isSubmitDisabled()}
               >
                 {loading ? <Spinner size={25} /> : "Continue"}
