@@ -47,7 +47,7 @@ export default function CreateSession() {
     try {
       const payload = {
         hall_id: Number(hallId),
-        session_type: sessionType,
+        session_type: sessionType.join(", "),
         dates,
       };
       const response = await post("bookings/add-sessions-list/", payload);
