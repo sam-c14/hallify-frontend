@@ -175,8 +175,8 @@ const HallInfo = () => {
                       key={session.id}
                       htmlFor={`session-${session.id}`}
                       className={`flex items-center gap-x-3 ${
-                        !session.is_booked && "hidden"
-                      }`}
+                        session.is_booked && "hidden"
+         }`}
                     >
                       <Checkbox
                         id={`session-${session.id}`}
