@@ -40,7 +40,7 @@ const Bookings = () => {
       ) : data?.length === 0 ? (
         <div className="pt-32 grid place-items-center min-h-[50dvh]">
           <div className="flex flex-col gap-y-3">
-            <img src={img} alt="empty-page-img" />
+            <img src={img ?? "No"} alt="empty-page-img" />
             <p className="font-inter sm:text-base text-sm text-neutral-500">
               {label}
             </p>
