@@ -109,7 +109,7 @@ const HallInfo = () => {
 
   const isSubmitDisabled = () => {
     const { session_ids, event_name } = bookingForm;
-    return event_name || session_ids.length === 0;
+    return !event_name || session_ids.length === 0;
   };
 
   const handleSubmit = async (e) => {
