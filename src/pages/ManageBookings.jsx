@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import EmptyData from "../components/EmptyData";
 import NoBookings from "../assets/images/no-bookings.png";
 import BookingsCard from "../components/BookingsCard";
@@ -26,7 +26,7 @@ const ManageBookings = () => {
 
   return (
     <div className="relative">
-      {!data?.length ? (
+      {!bookings?.length ? (
         <EmptyData
           baseRoute="Home"
           childRoute="Manage Bookings"
@@ -60,13 +60,13 @@ const ManageBookings = () => {
           </div>
         </div>
       )}
-      <button
+      {/* <button
         onClick={() => setHasBooking(!hasBooking)}
         title="For UAT, will be removed upon api integration"
         className="absolute top-full right-5 font-inter bg-purple-600 rounded-full text-white hover:scale-105 py-2.5 px-5"
       >
         Toggle Bookings
-      </button>
+      </button> */}
     </div>
   );
 };

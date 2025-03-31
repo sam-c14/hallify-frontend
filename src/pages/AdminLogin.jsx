@@ -30,6 +30,8 @@ const AdminLogin = () => {
     setLoading(true);
     try {
       const response = await post("auth/login/", form);
+      // if(response.role !== "admin") toast.error("You do not have an admin account, Please contact the company to sign up as an admin");
+      // else
       toast.success("Successfully logged in");
       navigate("/admin/dashboard");
       dispatch(

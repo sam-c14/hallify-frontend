@@ -7,6 +7,7 @@ const PasswordInput = ({
   onChange,
   placeholder = "Enter password",
   disabled = false,
+  required = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,6 +18,7 @@ const PasswordInput = ({
         value={value}
         onChange={onChange}
         disabled={disabled}
+        required={required}
         placeholder={placeholder}
         className="w-full p-2 pr-10 bg-transparent outline-none focus:ring-0 focus:outline-none"
       />

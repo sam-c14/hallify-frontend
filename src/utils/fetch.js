@@ -3,10 +3,13 @@ import { get } from "./axios";
 
 const cache = new Map();
 
-const useFetch = (url, params = {}, options = {}) => {
-  const [data, setData] = useState(cache.get(url) || null);
+const useFetch = (url, params = {}, options = { useCache: false }) => {
+  const { useCache } = options;
+  const [data, setData] = useState(
+    useCache && cache.get(url) ? cache.get(url) : null
+  );
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(!cache.has(url));
+  const [isLoading, setIsLoading] = useState(!data);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -14,23 +17,21 @@ const useFetch = (url, params = {}, options = {}) => {
 
     try {
       const response = await get(url, params);
-      cache.set(url, response);
+      if (useCache) cache.set(url, response); // Store only if caching is enabled
       setData(response);
     } catch (err) {
       setError(err);
     } finally {
       setIsLoading(false);
     }
-  }, [url, JSON.stringify(params)]);
+  }, [url, JSON.stringify(params), useCache]);
 
   useEffect(() => {
-    if (!cache.has(url)) {
-      fetchData();
-    }
+    fetchData(); // Always fetch new data by default
   }, [fetchData]);
 
   const mutate = async () => {
-    cache.delete(url);
+    cache.delete(url); // Clear cache before fetching
     await fetchData();
   };
 

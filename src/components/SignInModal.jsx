@@ -29,6 +29,11 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
     });
   };
 
+  // const validateFields = () => {
+  //   const {email, password, username} = form
+  //   if(authState === "sign-up") email
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -86,6 +91,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
             type="text"
             id="user_name"
             value={form.username}
+            required
             disabled={loading}
             onChange={({ target }) =>
               handleFormChange("username", target.value)
@@ -105,6 +111,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
               type="email"
               id="email"
               value={form.email}
+              required
               disabled={loading}
               onChange={({ target }) => handleFormChange("email", target.value)}
               className="shadow appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -120,6 +127,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
           </label>
           <PasswordInput
             disabled={loading}
+            required
             value={form.password}
             onChange={({ target }) =>
               handleFormChange("password", target.value)

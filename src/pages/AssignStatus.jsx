@@ -36,12 +36,12 @@ export default function AssignStatus() {
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-10">
-      <h2 className="text-xl font-semibold text-gray-700 mb-4">
+      <h2 className="text-xl text-center font-semibold text-gray-700 mb-4">
         Approve or Reject
       </h2>
-      <div className="flex gap-4 mb-5">
+      <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-5">
         <button
-          className={`px-4 py-2 rounded-lg text-white transition-all ${
+          className={`px-4 py-2 rounded-lg text-white font-instrument-sans transition-all ${
             action === "approve" ? "bg-green-600" : "bg-gray-300"
           }`}
           onClick={() => setAction("approve")}
@@ -50,7 +50,7 @@ export default function AssignStatus() {
           Approve
         </button>
         <button
-          className={`px-4 py-2 rounded-lg text-white transition-all ${
+          className={`px-4 py-2 rounded-lg text-white font-instrument-sans transition-all ${
             action === "reject" ? "bg-red-600" : "bg-gray-300"
           }`}
           onClick={() => setAction("reject")}
