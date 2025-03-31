@@ -218,7 +218,7 @@ const HallInfo = () => {
             </div>
 
             <CustomDatePicker
-              value={selectedDate ? [selectedDate, null] : [null, null]}
+              date={selectedDate ? [selectedDate, null] : [null, null]}
               onDateChange={handleDateChange}
             />
 
