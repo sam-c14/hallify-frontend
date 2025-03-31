@@ -8,7 +8,12 @@ import Spinner from "../components/Spinner";
 import { hallImgs } from "../data/venues";
 
 const ManageBookings = () => {
-  const { data: bookings, error, isLoading } = useFetch("/bookings/history/");
+  const {
+    data: bookings,
+    error,
+    isLoading,
+    mutate,
+  } = useFetch("/bookings/history/");
   // const [hasBooking, setHasBooking] = useState(false);
 
   // console.log(data);
@@ -24,8 +29,6 @@ const ManageBookings = () => {
         Error: {error.message}
       </p>
     );
-
-  console.log(bookings);
 
   return (
     <div className="relative">
@@ -53,7 +56,7 @@ const ManageBookings = () => {
                 date={booking?.date}
                 id={booking?.id}
                 session={booking?.session}
-                // guest_count={guest_count}
+                mutate={mutate}
                 event_name={booking?.event_name}
                 img={hallImgs[booking.hall - 1]}
                 status={booking?.status}

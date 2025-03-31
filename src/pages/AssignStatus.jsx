@@ -61,7 +61,7 @@ export default function AssignStatus() {
       </div>
       <button
         onClick={handleSubmit}
-        className={`w-full bg-blue-600 text-white py-3 rounded-lg ${
+        className={`w-full bg-blue-600 font-inter text-white py-3 rounded-lg ${
           loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
         } transition-all`}
         disabled={loading}

@@ -3,10 +3,21 @@ import { toast } from "react-toastify";
 import Calendar from "../assets/icons/calendar";
 import Guests from "../assets/icons/guests";
 import { post, parseError } from "../utils/axios";
+import ModalWrapper from "../components/ModalWrapper";
+import CancelBooking from "./CancelBooking";
 
-const BookingsCard = ({ id, session, date, status, img, event_name }) => {
+const BookingsCard = ({
+  id,
+  session,
+  date,
+  status,
+  img,
+  event_name,
+  mutate,
+}) => {
   const [loading, setLoading] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const getStatusColor = (status) => {
     if (status === "pending") return ["#FFDAC2", "#6E330C"];
@@ -37,6 +48,7 @@ const BookingsCard = ({ id, session, date, status, img, event_name }) => {
       const response = await post(`bookings/${id}/cancel/`);
       toast.success("Booking cancelled successfully!");
       console.log(response);
+      await mutate();
     } catch (error) {
       const errMsg = parseError(error);
       toast.error(errMsg);
@@ -44,6 +56,8 @@ const BookingsCard = ({ id, session, date, status, img, event_name }) => {
       setLoading(false);
     }
   };
+
+  const closeModal = () => setShowModal(false);
 
   return (
     <div className="border border-gray-300 rounded-xl p-5">
@@ -93,13 +107,20 @@ const BookingsCard = ({ id, session, date, status, img, event_name }) => {
           </button>
         )}
         <button
-          onClick={handleCancel}
+          onClick={() => setShowModal(true)}
           disabled={loading}
           className="bg-[#FDEDF0] hover:scale-105 transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
         >
-          {loading ? "Cancelling..." : "Cancel Booking"}
+          Cancel Booking
         </button>
       </div>
+      <ModalWrapper isOpen={showModal} onClose={closeModal}>
+        <CancelBooking
+          onClose={closeModal}
+          handleCancel={handleCancel}
+          loading={loading}
+        />
+      </ModalWrapper>
     </div>
   );
 };
