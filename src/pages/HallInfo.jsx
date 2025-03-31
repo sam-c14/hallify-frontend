@@ -17,7 +17,7 @@ const HallInfo = () => {
   const params = useParams();
   const [bookingForm, setBookingForm] = useState({
     session_ids: [],
-    date: "",
+    date: new Date().toISOString(),
     // end_date: "",
     event_name: "",
     hall_id: Number(params.id),
@@ -108,8 +108,8 @@ const HallInfo = () => {
   };
 
   const isSubmitDisabled = () => {
-    const { session_ids, date } = bookingForm;
-    return !date || session_ids.length === 0;
+    const { session_ids, event_name } = bookingForm;
+    return event_name || session_ids.length === 0;
   };
 
   const handleSubmit = async (e) => {
