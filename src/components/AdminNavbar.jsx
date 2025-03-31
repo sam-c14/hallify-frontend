@@ -40,7 +40,7 @@ const AdminNavbar = ({ toggleSidebar, isOpen }) => {
             textSize="sm:text-sm text-xs"
           />
           <span className="font-inter capitalize sm:text-sm text-xs">
-            John Doe
+            {user.name.length > 15 ? user.name.slice(0, 15) + "..." : user.name}
           </span>
           <AngleDown />
         </button>
