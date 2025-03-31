@@ -12,9 +12,11 @@ import { toast } from "react-toastify";
 import { post, parseError } from "../utils/axios";
 import Spinner from "../components/Spinner";
 import { format, startOfWeek, endOfWeek, parseISO } from "date-fns";
+import { useAppSelector } from "../redux/store";
 
 const HallInfo = () => {
   const params = useParams();
+  const { user } = useAppSelector((state) => state.auth);
   const [bookingForm, setBookingForm] = useState({
     session_ids: [],
     date: new Date().toISOString(),
@@ -114,6 +116,7 @@ const HallInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) return toast.info("Please login first");
     setLoading(true);
     try {
       const response = await post("bookings/create/", bookingForm);

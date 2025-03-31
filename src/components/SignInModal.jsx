@@ -4,13 +4,13 @@ import Google from "../assets/icons/google";
 import PasswordInput from "./PasswordInput";
 import { post, parseError } from "../utils/axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import Spinner from "./Spinner";
 import { login } from "../redux/slice/auth";
 import { useAppDispatch } from "../redux/store";
 
 const SignInModalContent = ({ onClose, isSignUp = true }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [form, setForm] = useState({
@@ -46,7 +46,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
       );
       if (authState === "sign-up") setAuthState("sign-in");
       else {
-        navigate("/manage-bookings");
+        window.location.assign("/manage-bookings");
         onClose();
         dispatch(
           login({
@@ -159,7 +159,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
       >
         Forgot password?
       </button> */}
-      <div className="flex gap-x-1 items-center mt-5 justify-center">
+      <div className="flex gap-x-1 sm:flex-row flex-col gap-y-3 items-center mt-5 justify-center">
         <span className="font-inter text-[#868C98] mt-0.5">
           {authState === "sign-up"
             ? "Already have an account?"
