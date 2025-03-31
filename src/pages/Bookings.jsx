@@ -4,6 +4,7 @@ import { halls } from "../data/booking";
 import useFetch from "../utils/fetch";
 import Table from "../components/Table";
 import Spinner from "../components/Spinner";
+import NoData from "../assets/images/no-bookings.png";
 
 const Bookings = () => {
   const params = useParams();
@@ -40,9 +41,12 @@ const Bookings = () => {
       ) : data?.length === 0 ? (
         <div className="pt-32 grid place-items-center min-h-[50dvh]">
           <div className="flex flex-col gap-y-3">
-            <img src={img ?? "No"} alt="empty-page-img" />
+            <div className="flex justify-center">
+              <img src={NoData} alt="empty-page-img" />
+            </div>
             <p className="font-inter sm:text-base text-sm text-neutral-500">
-              {label}
+              There currently are no added bookings for this hall, Click the add
+              bookings button above to add a new session
             </p>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { post, parseError } from "../utils/axios";
 import XMark from "../assets/icons/x-mark";
 import HallIdInput from "../components/HallIdInput";
 
-const sessionOptions = ["morning", "afternoon", "evening"];
+const sessionOptions = ["morning", "afternoon"];
 
 export default function CreateSession() {
   const [hallId, setHallId] = useState("");
@@ -101,7 +101,7 @@ export default function CreateSession() {
           </label>
           <div className="flex flex-col gap-y-4 mb-5">
             {dates.map((date, index) => (
-              <div key={index} className="flex items-center gap-2">
+              <div key={date} className="flex items-center gap-2">
                 <input
                   type="date"
                   value={date}
@@ -112,7 +112,7 @@ export default function CreateSession() {
                   <button
                     type="button"
                     onClick={() => removeDateField(index)}
-                    className="text-red-400 hover:scale-105 transition-all"
+                    className="text-red-400 scale-80 hover:scale-105 transition-all"
                   >
                     <XMark />
                   </button>
