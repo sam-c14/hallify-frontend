@@ -31,7 +31,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
 
   // const validateFields = () => {
   //   const {email, password, username} = form
-  //   if(authState === "sign-up") email
+  //   if(authState === "sign-up")
   // }
 
   const handleSubmit = async (e) => {
@@ -41,7 +41,9 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
 
     try {
       const response = await post(baseUrl, form);
-      toast.success("Successfully logged in");
+      toast.success(
+        `Successfully ${authState === "sign-in" ? "logged in" : "registered"}`
+      );
       if (authState === "sign-up") setAuthState("sign-in");
       else {
         navigate("/manage-bookings");

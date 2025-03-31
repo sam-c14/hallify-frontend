@@ -29,7 +29,9 @@ export default function HallIdInput({ value, onChange }) {
 
   return (
     <div>
-      <label className="block text-gray-600 text-sm mb-1">Hall ID</label>
+      <label className="block text-gray-600 text-sm mb-1">
+        Hall ID: 1 = A, 2 = B, 3 = C
+      </label>
       <div className="flex items-center gap-2">
         <button
           type="button"

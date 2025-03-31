@@ -11,6 +11,7 @@ import { useParams } from "react-router";
 import { toast } from "react-toastify";
 import { post, parseError } from "../utils/axios";
 import Spinner from "../components/Spinner";
+import { format, startOfWeek, endOfWeek, parseISO } from "date-fns";
 
 const HallInfo = () => {
   const params = useParams();
@@ -22,22 +23,25 @@ const HallInfo = () => {
     hall_id: Number(params.id),
   });
   const [loading, setLoading] = useState(false);
+
+  const [selectedDate, setSelectedDate] = useState("");
+  const [showWeeklySessions, setShowWeeklySessions] = useState(false);
+
   const { data, error, isLoading } = useFetch(`bookings/halls/${params.id}`);
 
   // console.log(data);
 
-  if (isLoading)
+  if (isLoading || error) {
     return (
       <div className="grid place-items-center min-h-screen">
-        <Spinner />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <p className="text-red-500">Error: {error.message}</p>
+        )}
       </div>
     );
-  if (error)
-    return (
-      <p className="text-red-500 text-center font-inter font-semibold">
-        Error: {error.message}
-      </p>
-    );
+  }
 
   const handleBookingFormChange = (key, value) => {
     setBookingForm((prev) => {
@@ -47,12 +51,57 @@ const HallInfo = () => {
       };
     });
   };
+  // Handle date selection
+  const handleDateChange = (dateRange) => {
+    if (dateRange[0]) {
+      const formattedDate = format(
+        dateRange[0] instanceof Date ? dateRange[0] : new Date(dateRange[0]),
+        "yyyy-MM-dd"
+      );
+
+      setSelectedDate(formattedDate);
+      setBookingForm((prev) => {
+        return {
+          ...prev,
+          session_ids: [],
+        };
+      });
+      setShowWeeklySessions(false);
+    }
+  };
+
+  // Filter sessions for the selected date
+  const filteredSessions = data?.sessions
+    ? data.sessions.filter(
+        (session) => session.date === selectedDate && !session.is_booked
+      )
+    : [];
+
+  // Get all sessions for the selected week (excluding selected date)
+  const selectedDateObj = selectedDate ? parseISO(selectedDate) : null;
+  const weekStart = selectedDateObj ? startOfWeek(selectedDateObj) : null;
+  const weekEnd = selectedDateObj ? endOfWeek(selectedDateObj) : null;
+
+  const weeklySessions = data?.sessions
+    ? data.sessions.filter((session) => {
+        const sessionDate = parseISO(session.date);
+        return (
+          selectedDateObj &&
+          sessionDate >= weekStart &&
+          sessionDate <= weekEnd &&
+          session.date !== selectedDate && // Exclude selected date
+          !session.is_booked
+        );
+      })
+    : [];
+
+  // console.log(data.sessions);
 
   const updateSessionArray = (isChecked, sessionType) => {
     setBookingForm((prev) => {
       const newSessions = isChecked
         ? [...prev.session_ids, sessionType] // ✅ Add session
-        : prev.session.filter((s) => s !== sessionType); // ✅ Remove session
+        : prev.session_ids.filter((s) => s !== sessionType); // ✅ Remove session
 
       return { ...prev, session_ids: newSessions };
     });
@@ -168,23 +217,64 @@ const HallInfo = () => {
               />
             </div>
 
-            <div className="font-inter border flex flex-col gap-y-4 border-gray-200 shadow-sm rounded-lg sm:px-5 px-3 py-3 mb-5">
-              {data?.sessions?.length
-                ? data?.sessions.map((session) => (
+            <CustomDatePicker
+              value={selectedDate ? [selectedDate, null] : [null, null]}
+              onDateChange={handleDateChange}
+            />
+
+            {/* Show sessions for selected date */}
+            <div className="mt-4">
+              {filteredSessions.length > 0 ? (
+                filteredSessions.map((session) => (
+                  <label key={session.id} className="flex items-center gap-x-3">
+                    <Checkbox
+                      onChange={(value) =>
+                        updateSessionArray(value, session.id)
+                      }
+                      value={bookingForm.session_ids.includes(session.id)}
+                      id={`session-${session.id}`}
+                      name="session"
+                    />
+                    <span className="font-inter">
+                      {session.session_type.charAt(0).toUpperCase() +
+                        session.session_type.slice(1)}{" "}
+                      Session - {session.date}
+                    </span>
+                  </label>
+                ))
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowWeeklySessions(!showWeeklySessions)}
+                  className="mt-3 text-blue-500 underline"
+                >
+                  {showWeeklySessions ? "Hide" : "See"} all available sessions
+                  this week
+                </button>
+              )}
+            </div>
+
+            {/* Show weekly sessions if no sessions found for selected date */}
+            {showWeeklySessions && (
+              <div className="mt-5">
+                <h4 className="font-semibold text-lg mb-4">
+                  Sessions this week:
+                </h4>
+                {weeklySessions.length > 0 ? (
+                  weeklySessions.map((session) => (
                     <label
                       key={session.id}
                       htmlFor={`session-${session.id}`}
-                      className={`flex items-center gap-x-3 ${
-                        session.is_booked && "hidden"
-         }`}
+                      className="flex items-center gap-x-3 my-1"
                     >
                       <Checkbox
+                        onChange={(value) => {
+                          console.log(value);
+                          updateSessionArray(value, session.id);
+                        }}
+                        value={bookingForm.session_ids.includes(session.id)}
                         id={`session-${session.id}`}
                         name="session"
-                        value={bookingForm.session_ids.includes(session.id)}
-                        onChange={(value) =>
-                          updateSessionArray(value, session.id)
-                        }
                       />
                       <span className="font-inter">
                         {session.session_type.charAt(0).toUpperCase() +
@@ -193,24 +283,11 @@ const HallInfo = () => {
                       </span>
                     </label>
                   ))
-                : "No sessions added for this hall"}
-            </div>
-            <div className="border border-gray-200 flex flex-col gap-y-4 shadow-sm rounded-lg sm:px-5 px-3 py-5 mb-5">
-              <CustomDatePicker
-                label="Date"
-                date={bookingForm.date}
-                onDateChange={(value) =>
-                  handleBookingFormChange("date", value[0])
-                }
-              />
-              {/* <CustomDatePicker
-                label="End Date"
-                date={bookingForm.end_date}
-                onDateChange={(value) =>
-                  handleBookingFormChange("end_date", value)
-                }
-              /> */}
-            </div>
+                ) : (
+                  <p>No available sessions for this week.</p>
+                )}
+              </div>
+            )}
             <div className="flex items-center font-inter gap-x-4 bg-[#FDEDF0] my-5 py-2.5 rounded-xl px-4">
               <Error />
               <p className="sm:text-sm text-xs font-normal">
