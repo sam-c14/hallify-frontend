@@ -73,3 +73,5 @@ export const venueInformation = {
   hallDescription:
     "Lorem ipsum dolor sit amet consectetur. Laoreet vivamus vivamus in amet ipsum commodo velit neque. Hendrerit nulla ipsum vitae netus id gravida pharetra. Nunc in vel vel eu lectus pellentesque nibh felis ornare. Nunc egestas adipiscing tortor pretium cras purus arcu. Euismod tellus ultrices lorem dis tincidunt dolor ipsum nibh facilisis.Malesuada urna sit ut tempus. Nibh aliquet integer metus dignissim at. Praesent in posuere tempus feugiat enim. Sagittis senectus metus amet fermentum blandit hac nulla vel sed.",
 };
+
+export const hallImgs = [HallA, HallB, HallC];

@@ -2,9 +2,10 @@
 import EmptyData from "../components/EmptyData";
 import NoBookings from "../assets/images/no-bookings.png";
 import BookingsCard from "../components/BookingsCard";
-// import { bookings } from "../data/booking";
+import { Link } from "react-router";
 import useFetch from "../utils/fetch";
 import Spinner from "../components/Spinner";
+import { hallImgs } from "../data/venues";
 
 const ManageBookings = () => {
   const { data: bookings, error, isLoading } = useFetch("/bookings/history/");
@@ -23,6 +24,8 @@ const ManageBookings = () => {
         Error: {error.message}
       </p>
     );
+
+  console.log(bookings);
 
   return (
     <div className="relative">
@@ -52,7 +55,7 @@ const ManageBookings = () => {
                 session={booking?.session}
                 // guest_count={guest_count}
                 event_name={booking?.event_name}
-                img={img}
+                img={hallImgs[booking.hall - 1]}
                 status={booking?.status}
                 sub_total={booking?.transaction_ref}
               />
@@ -60,13 +63,12 @@ const ManageBookings = () => {
           </div>
         </div>
       )}
-      {/* <button
-        onClick={() => setHasBooking(!hasBooking)}
-        title="For UAT, will be removed upon api integration"
+      <Link
+        to="/hall/2"
         className="absolute top-full right-5 font-inter bg-purple-600 rounded-full text-white hover:scale-105 py-2.5 px-5"
       >
-        Toggle Bookings
-      </button> */}
+        Add a booking
+      </Link>
     </div>
   );
 };

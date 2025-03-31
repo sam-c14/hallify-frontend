@@ -19,7 +19,7 @@ const HallInfo = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [bookingForm, setBookingForm] = useState({
     session_ids: [],
-    date: new Date().toISOString(),
+    date: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
     // end_date: "",
     event_name: "",
     hall_id: Number(params.id),
@@ -29,7 +29,9 @@ const HallInfo = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [showWeeklySessions, setShowWeeklySessions] = useState(false);
 
-  const { data, error, isLoading } = useFetch(`bookings/halls/${params.id}`);
+  const { data, error, isLoading, mutate } = useFetch(
+    `bookings/halls/${params.id}`
+  );
 
   // console.log(data);
 
@@ -123,6 +125,7 @@ const HallInfo = () => {
       toast.success("Hall successfully booked!");
       // navigate("/admin/sessions");
       console.log(response);
+      await mutate();
     } catch (error) {
       const errMsg = parseError(error);
       console.log(errMsg);
