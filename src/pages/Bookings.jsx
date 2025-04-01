@@ -89,7 +89,7 @@ const Bookings = () => {
         />
       </div>
       {isLoading ? (
-        <div className="grid place-items-center min-h-screen">
+        <div className="grid place-items-center min-h-[50dvh]">
           <Spinner />
         </div>
       ) : data?.length === 0 ? (

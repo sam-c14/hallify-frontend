@@ -85,7 +85,7 @@ export default function SessionsList() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center pt-40 min-h-screen">
+        <div className="flex justify-center pt-40 min-h-[50dvh]">
           <Spinner />
         </div>
       ) : paginatedSessions.length ? (
