@@ -53,7 +53,7 @@ export default function SessionsList() {
       {/* Filter Buttons */}
       <div className="flex gap-3 mb-6">
         <button
-          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+          className={`px-4 py-2 rounded-full sm:text-base text-xs border font-medium transition-all ${
             filter === "all"
               ? "bg-[#7a5af8] text-white"
               : "bg-transparent text-black border-black"
@@ -63,7 +63,7 @@ export default function SessionsList() {
           All
         </button>
         <button
-          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+          className={`px-4 py-2 rounded-full sm:text-base text-xs border font-medium transition-all ${
             filter === "booked"
               ? "bg-[#DF1C41] text-white"
               : "bg-transparent text-[#DF1C41] border-[#DF1C41]"
@@ -73,7 +73,7 @@ export default function SessionsList() {
           Booked
         </button>
         <button
-          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+          className={`px-4 py-2 rounded-full sm:text-base text-xs border font-medium transition-all ${
             filter === "available"
               ? "bg-[#38C793] text-white"
               : "bg-transparent text-[#38C793] border-[#38C793]"
