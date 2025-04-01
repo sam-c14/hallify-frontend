@@ -244,7 +244,7 @@ const HallInfo = () => {
                     <span className="font-inter">
                       {session.session_type.charAt(0).toUpperCase() +
                         session.session_type.slice(1)}{" "}
-                      Session - {session.date}
+                      Session
                     </span>
                   </label>
                 ))

@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, hideSidebar }) => {
         >
           <Crown />
           <span className="sm:text-base text-black text-sm font-inter">
-            Dashboard
+            Bookings
           </span>
         </Link>
         <Link

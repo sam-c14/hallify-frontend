@@ -3,7 +3,7 @@ import RedFlag from "../assets/icons/red-flag";
 
 const CancelBooking = ({ onClose, handleCancel, loading }) => {
   return (
-    <div className="bg-white sm:min-w-[450px] w-full px-5 py-8">
+    <div className="bg-white sm:min-w-[450px] w-full px-5 sm:py-8 py-2">
       <div className="flex justify-center">
         <RedFlag />
       </div>

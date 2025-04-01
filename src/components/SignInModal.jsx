@@ -64,6 +64,15 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
     }
   };
 
+  const switchAuthState = () => {
+    setAuthState(authState === "sign-up" ? "sign-in" : "sign-up");
+    setForm({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div className="bg-white sm:py-8 py-2 sm:px-5 px-0 w-full sm:min-w-[450px]">
       <h2 className="text-2xl font-bold mb-4">
@@ -168,9 +177,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
         <button
           type="button" // Use type="button" to prevent form submission
           className="inline-block font-inter align-baseline font-semibold sm:text-sm text-xs text-purple-500 hover:scale-105 focus:outline-none underline" // Tailwind classes for text button style
-          onClick={() =>
-            setAuthState(authState === "sign-up" ? "sign-in" : "sign-up")
-          }
+          onClick={switchAuthState}
         >
           {authState === "sign-up" ? "Sign in" : "Create Account"}
         </button>
