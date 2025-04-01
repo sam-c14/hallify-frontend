@@ -19,11 +19,17 @@ export default function SessionsList() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [filter, setFilter] = useState("all");
 
-  const totalPages = Math.ceil(sessions?.length / itemsPerPage);
+  const filteredSessions = sessions?.filter((session) => {
+    if (filter === "all") return true;
+    return filter === "booked" ? session.is_booked : !session.is_booked;
+  });
+
+  const totalPages = Math.ceil(filteredSessions?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedSessions = sessions?.slice(startIndex, endIndex) || [];
+  const paginatedSessions = filteredSessions?.slice(startIndex, endIndex) || [];
 
   if (error)
     return (
@@ -44,11 +50,45 @@ export default function SessionsList() {
         </Link>
       </div>
 
+      {/* Filter Buttons */}
+      <div className="flex gap-3 mb-6">
+        <button
+          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+            filter === "all"
+              ? "bg-[#7a5af8] text-white"
+              : "bg-transparent text-black border-black"
+          }`}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+            filter === "booked"
+              ? "bg-[#DF1C41] text-white"
+              : "bg-transparent text-[#DF1C41] border-[#DF1C41]"
+          }`}
+          onClick={() => setFilter("booked")}
+        >
+          Booked
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full border font-medium transition-all ${
+            filter === "available"
+              ? "bg-[#38C793] text-white"
+              : "bg-transparent text-[#38C793] border-[#38C793]"
+          }`}
+          onClick={() => setFilter("available")}
+        >
+          Available
+        </button>
+      </div>
+
       {isLoading ? (
         <div className="flex justify-center pt-40 min-h-screen">
           <Spinner />
         </div>
-      ) : sessions?.length ? (
+      ) : paginatedSessions.length ? (
         <>
           <div className="grid md:grid-cols-2 gap-6 w-full">
             {paginatedSessions.map((session) => (
@@ -97,8 +137,8 @@ export default function SessionsList() {
                 <img src={NoData} alt="empty-page-img" className="w-64 h-64" />
               </div>
               <p className="font-inter text-center sm:text-base text-sm text-neutral-500">
-                There currently are no added sessions for this hall, Click the
-                add sessions button above to add a new session.
+                There currently are no added sessions for this hall. Click the
+                add session button above to add a new session.
               </p>
             </div>
           </div>
