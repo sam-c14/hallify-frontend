@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import Checkbox from "../assets/icons/checkbox";
 import StatusBadge from "./Status";
 import Pagination from "./Pagination";
+import NoData from "../assets/images/no-bookings.png";
 
 const Table = ({
   headers,
@@ -28,114 +29,137 @@ const Table = ({
 
   return (
     <div>
-      <div className="overflow-x-auto bg-white">
-        <table className="min-w-[990px] w-full shadow-md border border-gray-200 rounded-lg">
-          {/* Table Head */}
-          <thead>
-            <tr className="bg-white border-b border-gray-200">
-              <th className="rounded-ss-lg p-2 py-3 max-w-5 bg-white">
-                <Checkbox />
-              </th>
-              {headers.map((header, index) => (
-                <th
-                  key={index}
-                  className={`px-4 py-2 text-left font-semibold font-inter border-0 ${
-                    index === headers.length - 1 ? "rounded-tr-lg" : ""
-                  }`}
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          {/* Table Body */}
-          <tbody>
-            {paginatedData.map((row, rowIndex) => (
-              <tr key={rowIndex} className="border border-gray-200">
-                {/* First column with Checkbox */}
-                <td
-                  className={`px-2 py-2 max-w-5 ${
-                    rowIndex === paginatedData.length - 1 ? "rounded-bl-lg" : ""
-                  }`}
-                >
+      <div className="overflow-x-auto bg-white rounded-lg">
+        {!data.length ? (
+          <div className="flex justify-center w-full pb-10">
+            <div className="pt-32 min-h-[50dvh]">
+              <div className="flex flex-col gap-y-3">
+                <div className="flex justify-center">
+                  <img
+                    src={NoData}
+                    alt="empty-page-img"
+                    className="w-64 h-64"
+                  />
+                </div>
+                <p className="font-inter text-center sm:text-base text-sm text-neutral-500">
+                  There currently are no items for this table.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <table className="min-w-[990px] w-full shadow-md border border-gray-200 rounded-lg">
+            {/* Table Head */}
+            <thead>
+              <tr className="bg-white border-b border-gray-200">
+                <th className="rounded-ss-lg p-2 py-3 max-w-5 bg-white">
                   <Checkbox />
-                </td>
-
-                {/* Dynamic columns based on headers */}
-                {headers.map((header, cellIndex) => {
-                  const key = formatHeaderKey(header);
-                  return (
-                    <td
-                      key={cellIndex}
-                      className={`px-4 py-2 border-b border-gray-200 font-inter ${
-                        rowIndex === paginatedData.length - 1 &&
-                        cellIndex === headers.length - 1
-                          ? "rounded-br-lg"
-                          : ""
-                      }`}
-                    >
-                      {typeof row[key] === "object" && row[key] !== null ? (
-                        <div className="flex items-center gap-x-2">
-                          <img
-                            src={row[key].img}
-                            alt={row[key].text}
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                          <p className="font-inter">{row[key].text}</p>
-                        </div>
-                      ) : key === "status" ? (
-                        <StatusBadge status={row[key]} />
-                      ) : key === "paid" ? (
-                        <StatusBadge
-                          status={row[key] ? "successful" : "failed"}
-                        />
-                      ) : (
-                        row[key]
-                      )}
-                    </td>
-                  );
-                })}
-
-                {/* Last column with action button */}
-                <td
-                  className={`px-4 py-2 text-center ${
-                    rowIndex === paginatedData.length - 1 ? "rounded-br-lg" : ""
-                  }`}
-                >
-                  <button
-                    onClick={() =>
-                      !disableClick &&
-                      navigate(
-                        checkStatus
-                          ? row["status"]?.toLowerCase?.() === "pending" &&
-                              `/admin/bookings/approve-reject/${row.id}`
-                          : route
-                          ? `${route}/${row.id}`
-                          : `/admin/bookings/${row.id}`
-                      )
-                    }
-                    className="p-2 rounded-full"
+                </th>
+                {headers.map((header, index) => (
+                  <th
+                    key={index}
+                    className={`px-4 py-2 text-left font-semibold font-inter border-0 ${
+                      index === headers.length - 1 ? "rounded-tr-lg" : ""
+                    }`}
                   >
-                    <svg
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect width="28" height="28" rx="14" fill="#EBE9FE" />
-                      <path
-                        d="M14.7958 13.9996L11.0833 10.2871L12.1438 9.22656L16.9168 13.9996L12.1438 18.7726L11.0833 17.7121L14.7958 13.9996Z"
-                        fill="#7A5AF8"
-                      />
-                    </svg>
-                  </button>
-                </td>
+                    {header}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            {/* Table Body */}
+            <tbody>
+              {paginatedData.map((row, rowIndex) => (
+                <tr key={rowIndex} className="border border-gray-200">
+                  {/* First column with Checkbox */}
+                  <td
+                    className={`px-2 py-2 max-w-5 ${
+                      rowIndex === paginatedData.length - 1
+                        ? "rounded-bl-lg"
+                        : ""
+                    }`}
+                  >
+                    <Checkbox />
+                  </td>
+
+                  {/* Dynamic columns based on headers */}
+                  {headers.map((header, cellIndex) => {
+                    const key = formatHeaderKey(header);
+                    return (
+                      <td
+                        key={cellIndex}
+                        className={`px-4 py-2 border-b border-gray-200 font-inter ${
+                          rowIndex === paginatedData.length - 1 &&
+                          cellIndex === headers.length - 1
+                            ? "rounded-br-lg"
+                            : ""
+                        }`}
+                      >
+                        {typeof row[key] === "object" && row[key] !== null ? (
+                          <div className="flex items-center gap-x-2">
+                            <img
+                              src={row[key].img}
+                              alt={row[key].text}
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                            <p className="font-inter">{row[key].text}</p>
+                          </div>
+                        ) : key === "status" ? (
+                          <StatusBadge status={row[key]} />
+                        ) : key === "paid" ? (
+                          <StatusBadge
+                            status={row[key] ? "successful" : "failed"}
+                          />
+                        ) : (
+                          row[key]
+                        )}
+                      </td>
+                    );
+                  })}
+
+                  {/* Last column with action button */}
+                  <td
+                    className={`px-4 py-2 text-center ${
+                      rowIndex === paginatedData.length - 1
+                        ? "rounded-br-lg"
+                        : ""
+                    }`}
+                  >
+                    <button
+                      onClick={() =>
+                        !disableClick &&
+                        navigate(
+                          checkStatus
+                            ? row["status"]?.toLowerCase?.() === "pending" &&
+                                `/admin/bookings/approve-reject/${row.id}`
+                            : route
+                            ? `${route}/${row.id}`
+                            : `/admin/bookings/${row.id}`
+                        )
+                      }
+                      className="p-2 rounded-full"
+                    >
+                      <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect width="28" height="28" rx="14" fill="#EBE9FE" />
+                        <path
+                          d="M14.7958 13.9996L11.0833 10.2871L12.1438 9.22656L16.9168 13.9996L12.1438 18.7726L11.0833 17.7121L14.7958 13.9996Z"
+                          fill="#7A5AF8"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       {paginate && (
         <Pagination

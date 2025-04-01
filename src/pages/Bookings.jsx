@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router";
 import { halls } from "../data/booking";
 import useFetch from "../utils/fetch";
@@ -11,11 +11,12 @@ import SortDropdown from "../components/SortDropdown";
 
 const Bookings = () => {
   const params = useParams();
+  const filterRef = useRef(null);
   const hallId = Number(params.hall_id);
   const selectedHall = halls.find((hall) => hall.id === hallId);
   const [filterParam, setFilterParam] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState(null);
   const headers = ["Event Name", "Paid", "Date", "Status"];
 
   const toSnakeCase = (str) => str.toLowerCase().replace(/\s+/g, "_");
@@ -47,6 +48,12 @@ const Bookings = () => {
     filterTable(value);
   };
 
+  const clearFilter = () => {
+    setFilterParam("");
+    setFilteredItems(null);
+    filterRef.current.value = "";
+  };
+
   return (
     <div className="pl-5 sm:pt-0 pt-12 sm:pr-10">
       <h5 className="font-inter sm:text-sm text-xs text-[#868C98] mt-4">
@@ -63,6 +70,7 @@ const Bookings = () => {
             <MagnifyingGlass />
             <input
               type="text"
+              ref={filterRef}
               onChange={({ target }) => handleFilter(target.value)}
               className="font-inter sm:text-base text-sm focus:outline-none focus:ring-none py-2.5 w-11/12 border-0 bg-white"
               name="search"
@@ -72,9 +80,9 @@ const Bookings = () => {
           {isFiltering ? (
             <Spinner size={20} />
           ) : (
-            !!filteredItems.length && (
+            filteredItems && (
               <button
-                onClick={() => setFilteredItems([])}
+                onClick={clearFilter}
                 className="bg-[#DF1C41] hover:bg-transparent hover:text-[#DF1C41] border border-[#DF1C41] rounded-lg font-semibold shadow-md text-white font-inter sm:text-base text-sm py-2.5 w-32"
               >
                 Clear
@@ -106,7 +114,7 @@ const Bookings = () => {
       ) : (
         <Table
           headers={headers}
-          data={filteredItems.length ? filteredItems : data}
+          data={filteredItems ? filteredItems : data}
           route={null}
           checkStatus
           paginate
