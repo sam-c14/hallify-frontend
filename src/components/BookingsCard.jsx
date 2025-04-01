@@ -11,6 +11,7 @@ const BookingsCard = ({
   session,
   date,
   status,
+  hall,
   img,
   event_name,
   mutate,
@@ -59,13 +60,15 @@ const BookingsCard = ({
 
   const closeModal = () => setShowModal(false);
 
+  // console.log(bookin);
+
   return (
     <div className="border border-gray-300 rounded-xl p-5">
       <div className="flex items-center gap-5">
         <img className="w-[90px] h-[80px]" src={img} alt="booking-img" />
         <div className="flex flex-col gap-y-4">
-          <div className="flex items-center justify-between">
-            <h6 className="sm:text-xl font-inter text-lg">{event_name}</h6>
+          <div className="flex gap-x-3 items-center justify-between">
+            <h6 className="sm:text-lg font-inter text-sm">{event_name}</h6>
             <p
               style={{
                 color: getStatusColor(status.toLowerCase())[1],
@@ -90,10 +93,12 @@ const BookingsCard = ({
               </span>
             </div>
           </div>
-          {/* <div className="flex items-center gap-x-3 sm:text-base text-sm font-inter">
-            <p>Transaction Ref:</p>
-            <h6 className="font-semibold">{transaction_ref}</h6>
-          </div> */}
+          <div className="flex items-center gap-x-1 sm:text-base text-sm font-inter">
+            <p>Hall:</p>
+            <h6 className="font-semibold">
+              {hall === 1 ? "A" : hall === 2 ? "B" : "C"}
+            </h6>
+          </div>
         </div>
       </div>
       <div className="flex gap-x-2 mt-4">
@@ -108,12 +113,19 @@ const BookingsCard = ({
         )}
         <button
           onClick={() => setShowModal(true)}
-          disabled={loading}
-          className="bg-[#FDEDF0] hover:scale-105 transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
+          disabled={status === "rejected"}
+          className="bg-[#FDEDF0] disabled:bg-[#DF1C41] disabled:text-white disabled:hover:scale-100 font-semibold hover:scale-105 transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
         >
-          Cancel Booking
+          {status === "rejected" ? "Rejected" : "Cancel Booking"}
         </button>
       </div>
+
+      {status === "rejected" && (
+        <p className="font-inter mt-3.5 sm:text-sm text-xs text-center">
+          This booking has been rejected, Further actions cannot be taken,
+          Contat the event manager if you think this was an error.
+        </p>
+      )}
       <ModalWrapper isOpen={showModal} onClose={closeModal}>
         <CancelBooking
           onClose={closeModal}

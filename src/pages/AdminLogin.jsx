@@ -56,7 +56,7 @@ const AdminLogin = () => {
           <h3 className="font-inter font-semibold md:text-3xl text-xl">
             Sign In
           </h3>
-          <p className="font-inter md:text-base text-sm text-gray-400">
+          <p className="font-inter text-center md:text-base text-sm text-gray-400">
             Instant access to your account
           </p>
         </div>

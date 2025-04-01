@@ -67,7 +67,7 @@ const Pagination = ({
       </select>
 
       {/* Pagination Controls */}
-      <div className="flex items-center">
+      <div className="flex items-center overflow-x-auto sm:px-0 px-2">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}

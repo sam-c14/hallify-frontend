@@ -56,6 +56,7 @@ const ManageBookings = () => {
                 date={booking?.date}
                 id={booking?.id}
                 session={booking?.session}
+                hall={booking?.hall}
                 mutate={mutate}
                 event_name={booking?.event_name}
                 img={hallImgs[booking.hall - 1]}
@@ -67,7 +68,7 @@ const ManageBookings = () => {
         </div>
       )}
       <Link
-        to="/hall/2"
+        to={`/hall/${Math.floor(Math.random() * 3) + 1}`}
         className="absolute top-full right-5 font-inter bg-purple-600 rounded-full text-white hover:scale-105 py-2.5 px-5"
       >
         Add a booking

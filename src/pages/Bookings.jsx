@@ -44,12 +44,11 @@ const Bookings = () => {
 
   const handleFilter = (value) => {
     setIsFiltering(true);
-    console.log("Got here");
     filterTable(value);
   };
 
   return (
-    <div className="pl-5 sm:pt-0 pt-12">
+    <div className="pl-5 sm:pt-0 pt-12 sm:pr-10">
       <h5 className="font-inter sm:text-sm text-xs text-[#868C98] mt-4">
         <span className="font-inherit text-black">Bookings / </span>
         <span>{selectedHall.name}</span>
@@ -58,9 +57,9 @@ const Bookings = () => {
         {selectedHall.name}
       </h2>
       {/* Table */}
-      <div className="flex justify-between items-center mb-5">
-        <div className="flex items-center gap-x-3">
-          <div className="bg-white border border-[#F6F8FA] rounded-md px-3.5 sm:flex hidden items-center gap-x-3">
+      <div className="flex sm:flex-row flex-col gap-y-3 justify-between sm:items-center items-start mb-5">
+        <div className="flex items-center sm:w-auto w-full gap-x-3">
+          <div className="bg-white sm:w-auto w-full border border-[#F6F8FA] rounded-md px-3.5 flex items-center gap-x-3">
             <MagnifyingGlass />
             <input
               type="text"

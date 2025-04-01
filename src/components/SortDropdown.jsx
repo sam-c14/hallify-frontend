@@ -30,7 +30,7 @@ const SortDropdown = ({ value, setValue }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+        <div className="absolute sm:right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
           {options.map((option) => (
             <button
               key={option}

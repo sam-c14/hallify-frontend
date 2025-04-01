@@ -62,7 +62,7 @@ const Admin = () => {
 
         {/* Page Content */}
         <div
-          className={`sm:py-20 py-10 px-4 pl-4 w-full bg-[#F6F8FA] ${
+          className={`sm:py-20 py-10 px-4 sm:pl-4 sm:pr-0 pr-4 pl-0 w-full bg-[#F6F8FA] ${
             token && "lg:pl-64"
           }`}
         >
