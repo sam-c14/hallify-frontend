@@ -11,7 +11,7 @@ const AdminNavbar = ({ toggleSidebar, isOpen }) => {
   const user = useAppSelector((state) => state.auth.user);
 
   return (
-    <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-250px)] h-20 shadow-md bg-white flex items-center justify-between px-5 z-50">
+    <div className="fixed top-0 left-0 lg:left-60 w-full lg:w-[calc(100%-250px)] h-20 shadow-md bg-white flex items-center justify-between px-5 z-50">
       <div className="flex items-center gap-x-3">
         <button
           className="lg:hidden focus:outline-none"

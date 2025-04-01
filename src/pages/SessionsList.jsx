@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
+import { useState } from "react";
 import useFetch from "../utils/fetch";
 import Spinner from "../components/Spinner";
+import Pagination from "../components/Pagination";
 import { Link } from "react-router";
 import NoData from "../assets/images/no-bookings.png";
 
@@ -14,6 +16,14 @@ export default function SessionsList() {
     error,
     isLoading,
   } = useFetch(`bookings/halls/${params.hall_id}/sessions/`);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+
+  const totalPages = Math.ceil(sessions?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedSessions = sessions?.slice(startIndex, endIndex) || [];
 
   if (error)
     return (
@@ -39,36 +49,48 @@ export default function SessionsList() {
           <Spinner />
         </div>
       ) : sessions?.length ? (
-        <div className="grid md:grid-cols-2 gap-6 w-full">
-          {sessions.map((session) => (
-            <div key={session.id}>
-              <div
-                className={`p-4 rounded-lg shadow-md transition-all border-l-4 ${
-                  session.is_booked
-                    ? "border-red-500 bg-red-50"
-                    : "border-green-500 bg-green-50"
-                }`}
-              >
-                <h3 className="text-lg font-medium">
-                  Hall {session.hall} - {session.date}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Session:</span>{" "}
-                  {session.session_type.replace(/[\[\]']/g, "")}
-                </p>
-                <p
-                  className={`mt-2 text-sm font-medium ${
-                    session.is_booked ? "text-red-600" : "text-green-600"
+        <>
+          <div className="grid md:grid-cols-2 gap-6 w-full">
+            {paginatedSessions.map((session) => (
+              <div key={session.id}>
+                <div
+                  className={`p-4 rounded-lg shadow-md transition-all border-l-4 ${
+                    session.is_booked
+                      ? "border-red-500 bg-red-50"
+                      : "border-green-500 bg-green-50"
                   }`}
                 >
-                  {session.is_booked ? "Booked" : "Available"}
-                </p>
+                  <h3 className="text-lg font-medium">
+                    Hall {session.hall} - {session.date}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Session:</span>{" "}
+                    {session.session_type.replace(/[\[\]']/g, "")}
+                  </p>
+                  <p
+                    className={`mt-2 text-sm font-medium ${
+                      session.is_booked ? "text-red-600" : "text-green-600"
+                    }`}
+                  >
+                    {session.is_booked ? "Booked" : "Available"}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+
+          {/* Pagination Component */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            setCurrentPage={setCurrentPage}
+            setItemsPerPage={setItemsPerPage}
+          />
+        </>
       ) : (
-        <div className="flex justify-centerw-full">
+        <div className="flex justify-center w-full">
           <div className="pt-32 min-h-[50dvh]">
             <div className="flex flex-col gap-y-3">
               <div className="flex justify-center">
@@ -76,7 +98,7 @@ export default function SessionsList() {
               </div>
               <p className="font-inter text-center sm:text-base text-sm text-neutral-500">
                 There currently are no added sessions for this hall, Click the
-                add sessions button above to add a new session
+                add sessions button above to add a new session.
               </p>
             </div>
           </div>
@@ -84,7 +106,4 @@ export default function SessionsList() {
       )}
     </div>
   );
-}
-{
-  /*  */
 }

@@ -65,7 +65,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
   };
 
   return (
-    <div className="bg-white py-8 sm:px-5 px-0 w-full sm:min-w-[450px]">
+    <div className="bg-white sm:py-8 py-2 sm:px-5 px-0 w-full sm:min-w-[450px]">
       <h2 className="text-2xl font-bold mb-4">
         Sign {authState === "sign-up" ? "Up" : "In"}
       </h2>

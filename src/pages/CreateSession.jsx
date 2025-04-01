@@ -35,7 +35,7 @@ export default function CreateSession() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!hallId || sessionType.length === 0 || !startDate || !endDate) {
+    if (!hallId || !startDate || !endDate) {
       toast.error("Please fill all fields correctly.");
       return;
     }
@@ -50,7 +50,7 @@ export default function CreateSession() {
       const dates = generateDateRange(startDate, endDate);
       const payload = {
         hall_id: Number(hallId),
-        session_type: sessionType.join(", "),
+        // session_type: sessionType.join(", "),
         dates,
       };
       await post("bookings/add-sessions-list/", payload);
@@ -72,7 +72,8 @@ export default function CreateSession() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <HallIdInput value={hallId} onChange={setHallId} />
 
-        <div>
+        {/* Commented out for future purposes */}
+        <div className="hidden">
           <label className="block text-gray-600 text-sm mb-1">
             Session Type
           </label>

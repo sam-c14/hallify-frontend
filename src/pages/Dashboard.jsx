@@ -28,7 +28,7 @@ const Dashboard = () => {
       <h2 className="font-inter sm:text-3xl text-lg font-semibold mb-5">
         Halls
       </h2>
-      <div className="pr-10">
+      <div className="sm:pr-10">
         <Table headers={headers} data={data} />
       </div>
     </div>

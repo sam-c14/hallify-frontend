@@ -14,6 +14,7 @@ const Bookings = () => {
   const hallId = Number(params.hall_id);
   const selectedHall = halls.find((hall) => hall.id === hallId);
   const [filterParam, setFilterParam] = useState("");
+  const [isFiltering, setIsFiltering] = useState(false);
   const [filteredItems, setFilteredItems] = useState([]);
   const headers = ["Event Name", "Paid", "Date", "Status"];
 
@@ -38,7 +39,14 @@ const Bookings = () => {
       return item[toSnakeCase(filterParam)] === val;
     });
     setFilteredItems(items);
+    setIsFiltering(false);
   }, 2000);
+
+  const handleFilter = (value) => {
+    setIsFiltering(true);
+    console.log("Got here");
+    filterTable(value);
+  };
 
   return (
     <div className="pl-5 sm:pt-0 pt-12">
@@ -56,19 +64,23 @@ const Bookings = () => {
             <MagnifyingGlass />
             <input
               type="text"
-              onChange={({ target }) => filterTable(target.value)}
+              onChange={({ target }) => handleFilter(target.value)}
               className="font-inter sm:text-base text-sm focus:outline-none focus:ring-none py-2.5 w-11/12 border-0 bg-white"
               name="search"
               placeholder="Search..."
             />
           </div>
-          {!!filteredItems.length && (
-            <button
-              onClick={() => setFilteredItems([])}
-              className="bg-[#DF1C41] hover:bg-transparent hover:text-[#DF1C41] border border-[#DF1C41] rounded-lg font-semibold shadow-md text-white font-inter sm:text-base text-sm py-2.5 w-32"
-            >
-              Clear
-            </button>
+          {isFiltering ? (
+            <Spinner size={20} />
+          ) : (
+            !!filteredItems.length && (
+              <button
+                onClick={() => setFilteredItems([])}
+                className="bg-[#DF1C41] hover:bg-transparent hover:text-[#DF1C41] border border-[#DF1C41] rounded-lg font-semibold shadow-md text-white font-inter sm:text-base text-sm py-2.5 w-32"
+              >
+                Clear
+              </button>
+            )
           )}
         </div>
         <SortDropdown
@@ -98,6 +110,7 @@ const Bookings = () => {
           data={filteredItems.length ? filteredItems : data}
           route={null}
           checkStatus
+          paginate
         />
       )}
     </div>
