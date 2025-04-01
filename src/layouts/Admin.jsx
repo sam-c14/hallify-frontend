@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import AdminNavbar from "../components/AdminNavbar";
 import Sidebar from "../components/Sidebar";
 import { useAppSelector } from "../redux/store";
 import { useNavigate } from "react-router";
+import ArrowUpIcon from "../assets/icons/arrow-up";
 
 const Admin = () => {
   const { token, user } = useAppSelector((state) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (token && user.role !== "admin") navigate("/");
   }, []);
 
-  //   console.log(user);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="flex">
@@ -44,6 +62,16 @@ const Admin = () => {
           <Outlet />
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollButton && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-5 right-5 bg-blue-500 text-white p-3 rounded-full shadow-md hover:bg-blue-600 transition-all"
+        >
+          <ArrowUpIcon />
+        </button>
+      )}
     </div>
   );
 };

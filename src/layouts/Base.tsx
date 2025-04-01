@@ -1,9 +1,28 @@
-import React from "react";
-import { Outlet } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import ArrowUpIcon from "../assets/icons/arrow-up";
 
 const Base = () => {
+  const [showScroll, setShowScroll] = useState(false);
+  const location = useLocation();
+
+  // Show/hide scroll-to-top button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScroll(window.scrollY > 200); // Show when scrolled past 200px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to top when route changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
   return (
     <div>
       <Navbar />
@@ -11,6 +30,15 @@ const Base = () => {
         <Outlet />
       </div>
       <Footer />
+
+      {showScroll && (
+        <button
+          className="fixed bottom-5 right-5 p-3 bg-gray-800 text-white rounded-full shadow-lg hover:bg-gray-900 transition"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <ArrowUpIcon />
+        </button>
+      )}
     </div>
   );
 };
