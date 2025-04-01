@@ -2,7 +2,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { post, parseError } from "../utils/axios";
-import HallIdInput from "../components/HallIdInput";
+import { useParams } from "react-router-dom";
+// import HallIdInput from "../components/HallIdInput";
 
 const sessionOptions = ["morning", "afternoon"];
 
@@ -13,6 +14,7 @@ export default function CreateSession() {
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleSessionChange = (value) => {
     setSessionType((prev) =>
@@ -49,7 +51,7 @@ export default function CreateSession() {
     try {
       const dates = generateDateRange(startDate, endDate);
       const payload = {
-        hall_id: Number(hallId),
+        hall_id: Number(params.hall_id),
         // session_type: sessionType.join(", "),
         dates,
       };
@@ -70,7 +72,18 @@ export default function CreateSession() {
         Add Hall Sessions
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <HallIdInput value={hallId} onChange={setHallId} />
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">
+            Hall ID: 1 = A, 2 = B, 3 = C
+          </label>
+          Hall{" "}
+          {Number(params.hall_id) === 1
+            ? "A"
+            : Number(params.hall_id) === 2
+            ? "B"
+            : "C"}
+        </div>
+        {/* <HallIdInput value={hallId} onChange={setHallId} /> */}
 
         {/* Commented out for future purposes */}
         <div className="hidden">

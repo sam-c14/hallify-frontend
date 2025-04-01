@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import HallInfo from "./pages/HallInfo";
 import ManageBookings from "./pages/ManageBookings";
+import VerificationPage from "./pages/Verification";
 import ManageFavorites from "./pages/ManageFavorites";
 import AdminLogin from "./pages/AdminLogin";
 import AdminSignup from "./pages/AdminSignUp";
@@ -24,6 +25,7 @@ const routes = [
       { index: true, element: <Home /> },
       { path: "hall/:id", element: <HallInfo /> },
       { path: "manage-bookings", element: <ManageBookings /> },
+      { path: "verify-payment", element: <VerificationPage /> },
       { path: "manage-favorites", element: <ManageFavorites /> },
     ],
   },

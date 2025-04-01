@@ -35,7 +35,7 @@ export default function AssignStatus() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-10">
+    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md sm:mt-10 mt-20">
       <h2 className="text-xl text-center font-semibold text-gray-700 mb-4">
         Approve or Reject
       </h2>
