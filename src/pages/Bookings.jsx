@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { halls } from "../data/booking";
 import useFetch from "../utils/fetch";
 import Table from "../components/Table";
 import Spinner from "../components/Spinner";
 import NoData from "../assets/images/no-bookings.png";
+import MagnifyingGlass from "../assets/icons/magnifying-glass";
+import { debounce } from "../utils/axios";
+import SortDropdown from "../components/SortDropdown";
 
 const Bookings = () => {
   const params = useParams();
   const hallId = Number(params.hall_id);
   const selectedHall = halls.find((hall) => hall.id === hallId);
-
+  const [filterParam, setFilterParam] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
   const headers = ["Event Name", "Paid", "Date", "Status"];
+
+  const toSnakeCase = (str) => str.toLowerCase().replace(/\s+/g, "_");
 
   const { data, error, isLoading } = useFetch(
     `bookings/halls/${hallId}/bookings/`
@@ -24,8 +30,18 @@ const Bookings = () => {
       </p>
     );
 
+  const filterTable = debounce((value) => {
+    const val = ["Status", "Paid"].includes(filterParam)
+      ? value.toLowerCase()
+      : value;
+    const items = data?.filter((item) => {
+      return item[toSnakeCase(filterParam)] === val;
+    });
+    setFilteredItems(items);
+  }, 2000);
+
   return (
-    <div className="pl-5">
+    <div className="pl-5 sm:pt-0 pt-12">
       <h5 className="font-inter sm:text-sm text-xs text-[#868C98] mt-4">
         <span className="font-inherit text-black">Bookings / </span>
         <span>{selectedHall.name}</span>
@@ -34,6 +50,32 @@ const Bookings = () => {
         {selectedHall.name}
       </h2>
       {/* Table */}
+      <div className="flex justify-between items-center mb-5">
+        <div className="flex items-center gap-x-3">
+          <div className="bg-white border border-[#F6F8FA] rounded-md px-3.5 sm:flex hidden items-center gap-x-3">
+            <MagnifyingGlass />
+            <input
+              type="text"
+              onChange={({ target }) => filterTable(target.value)}
+              className="font-inter sm:text-base text-sm focus:outline-none focus:ring-none py-2.5 w-11/12 border-0 bg-white"
+              name="search"
+              placeholder="Search..."
+            />
+          </div>
+          {!!filteredItems.length && (
+            <button
+              onClick={() => setFilteredItems([])}
+              className="bg-[#DF1C41] hover:bg-transparent hover:text-[#DF1C41] border border-[#DF1C41] rounded-lg font-semibold shadow-md text-white font-inter sm:text-base text-sm py-2.5 w-32"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <SortDropdown
+          value={filterParam}
+          setValue={(option) => setFilterParam(option)}
+        />
+      </div>
       {isLoading ? (
         <div className="grid place-items-center min-h-screen">
           <Spinner />
@@ -51,7 +93,12 @@ const Bookings = () => {
           </div>
         </div>
       ) : (
-        <Table headers={headers} data={data} route={null} checkStatus />
+        <Table
+          headers={headers}
+          data={filteredItems.length ? filteredItems : data}
+          route={null}
+          checkStatus
+        />
       )}
     </div>
   );

@@ -36,9 +36,14 @@ const Admin = () => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex bg-[#F6F8FA]">
       {/* Sidebar */}
-      {token && <Sidebar isOpen={sidebarOpen} />}
+      {token && (
+        <Sidebar
+          isOpen={sidebarOpen}
+          hideSidebar={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Main Content Area */}
       <div
@@ -57,7 +62,9 @@ const Admin = () => {
 
         {/* Page Content */}
         <div
-          className={`sm:py-20 py-10 px-4 pl-4 w-full ${token && "lg:pl-64"}`}
+          className={`sm:py-20 py-10 px-4 pl-4 w-full bg-[#F6F8FA] ${
+            token && "lg:pl-64"
+          }`}
         >
           <Outlet />
         </div>

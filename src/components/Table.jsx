@@ -14,12 +14,12 @@ const Table = ({
   const navigate = useNavigate();
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white">
       <table className="min-w-[990px] w-full shadow-md border border-gray-200 rounded-lg">
         {/* Table Head */}
         <thead>
           <tr className="bg-white border-b border-gray-200">
-            <th className="rounded-ss-lg p-2 py-3 bg-white">
+            <th className="rounded-ss-lg p-2 py-3 max-w-5 bg-white">
               <Checkbox />
             </th>
             {headers.map((header, index) => (
@@ -41,7 +41,7 @@ const Table = ({
             <tr key={rowIndex} className="border border-gray-200">
               {/* First column with SVG Icon */}
               <td
-                className={`px-2 py-2 ${
+                className={`px-2 py-2 max-w-5 ${
                   rowIndex === data.length - 1 ? "rounded-bl-lg" : ""
                 }`}
               >

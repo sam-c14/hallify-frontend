@@ -19,11 +19,11 @@ const AdminNavbar = ({ toggleSidebar, isOpen }) => {
         >
           {isOpen ? <XMark /> : <Menu />}
         </button>
-        <div className="bg-[#F6F8FA] rounded-md px-3.5 flex items-center gap-x-3">
+        <div className="bg-[#F6F8FA] rounded-md px-3.5 sm:flex hidden items-center gap-x-3">
           <MagnifyingGlass />
           <input
             type="text"
-            className="font-inter sm:tesxt-base text-sm focus:outline-none focus:ring-none py-2.5 w-11/12 border-0 bg-transparent"
+            className="font-inter sm:text-base text-sm focus:outline-none focus:ring-none py-2.5 w-11/12 border-0 bg-transparent"
             name="search"
             placeholder="Search..."
           />
@@ -33,7 +33,7 @@ const AdminNavbar = ({ toggleSidebar, isOpen }) => {
         <button>
           <Bell />
         </button>
-        <button className="border border-gray-300 rounded-md px-2 py-1.5 shadow-sm flex items-center gap-x-2">
+        <button className="border border-gray-300 rounded-lg px-2 py-1.5 shadow-sm flex items-center gap-x-2">
           <Avatar
             name={user.name}
             size="w-8 h-8"

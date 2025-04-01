@@ -91,3 +91,12 @@ export default axiosInstance;
 export const parseError = (e) => {
   return e.response.data.error;
 };
+
+export function debounce(func, delay) {
+  let timeoutId;
+
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+}

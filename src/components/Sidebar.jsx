@@ -6,7 +6,7 @@ import Exit from "../assets/icons/exit";
 import { useLocation } from "react-router-dom";
 import SessionIcon from "../assets/icons/session";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, hideSidebar }) => {
   const { pathname } = useLocation();
 
   const logoutUser = () => {
@@ -26,6 +26,7 @@ const Sidebar = ({ isOpen }) => {
         </Link>
         <Link
           to="/admin/dashboard"
+          onClick={hideSidebar}
           className={`hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md flex items-center gap-x-2 ${
             (pathname === "/admin/dashboard" ||
               pathname.includes("bookings")) &&
@@ -39,6 +40,7 @@ const Sidebar = ({ isOpen }) => {
         </Link>
         <Link
           to="/admin/sessions"
+          onClick={hideSidebar}
           className={`hover:bg-[#F6F8FA] hover:font-semibold transition-all p-3 rounded-md flex items-center gap-x-2 ${
             pathname.includes("session") && "bg-[#F6F8FA] font-semibold"
           }`}

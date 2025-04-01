@@ -1,5 +1,3 @@
-// import { useState } from "react";
-
 const Checkbox = ({ id, name, value, onChange }) => {
   return (
     <div className="flex items-center cursor-pointer">

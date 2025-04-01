@@ -41,9 +41,8 @@ export default function SessionsList() {
       ) : sessions?.length ? (
         <div className="grid md:grid-cols-2 gap-6 w-full">
           {sessions.map((session) => (
-            <div>
+            <div key={session.id}>
               <div
-                key={session.id}
                 className={`p-4 rounded-lg shadow-md transition-all border-l-4 ${
                   session.is_booked
                     ? "border-red-500 bg-red-50"
