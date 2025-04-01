@@ -160,14 +160,14 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
         Forgot password?
       </button> */}
       <div className="flex gap-x-1 sm:flex-row flex-col gap-y-3 items-center mt-5 justify-center">
-        <span className="font-inter text-[#868C98] mt-0.5">
+        <span className="font-inter sm:text-base text-sm text-[#868C98] mt-0.5">
           {authState === "sign-up"
             ? "Already have an account?"
             : "Don't have an account yet?"}
         </span>{" "}
         <button
           type="button" // Use type="button" to prevent form submission
-          className="inline-block font-inter align-baseline font-semibold text-sm text-purple-500 hover:scale-105 focus:outline-none underline" // Tailwind classes for text button style
+          className="inline-block font-inter align-baseline font-semibold sm:text-sm text-xs text-purple-500 hover:scale-105 focus:outline-none underline" // Tailwind classes for text button style
           onClick={() =>
             setAuthState(authState === "sign-up" ? "sign-in" : "sign-up")
           }
