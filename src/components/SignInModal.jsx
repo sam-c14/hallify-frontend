@@ -82,7 +82,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
       <h2 className="text-2xl font-bold mb-4">
         Sign {authState === "sign-up" ? "Up" : "In"}
       </h2>
-      <div className="flex items-center p-2">
+      {/* <div className="flex items-center p-2">
         <button
           className="shadow appearance-none border rounded-md w-full px-3 mx-2 py-2 grid place-items-center border-gray-200 hover:bg-purple-500 transition-colors"
           type="button"
@@ -92,7 +92,7 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
       </div>
       <div>
         <DividerWithText text={"or"} />
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

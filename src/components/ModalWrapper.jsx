@@ -14,7 +14,7 @@ const ModalWrapper = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null; // Ensure nothing renders when closed
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 w-screen h-screen">
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 w-screen h-screen z-50">
       <dialog
         ref={dialogRef}
         className="bg-white sm:min-w-auto min-w-[85vw] p-6 rounded-lg shadow-lg"

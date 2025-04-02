@@ -20,7 +20,7 @@ const HallInfo = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [bookingForm, setBookingForm] = useState({
     session_ids: [],
-    date: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
+    date: "",
     // end_date: "",
     event_name: "",
     hall_id: Number(params.id),
@@ -38,7 +38,7 @@ const HallInfo = () => {
     setShowWeeklySessions(false);
     setBookingForm({
       session_ids: [],
-      date: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
+      date: "",
       // end_date: "",
       event_name: "",
       hall_id: Number(params.id),
@@ -110,13 +110,13 @@ const HallInfo = () => {
       })
     : [];
 
-  const updateSessionArray = (isChecked, sessionType) => {
+  const updateSessionArray = (isChecked, sessionType, date) => {
     setBookingForm((prev) => {
       const newSessions = isChecked
         ? [...prev.session_ids, sessionType] // ✅ Add session
         : prev.session_ids.filter((s) => s !== sessionType); // ✅ Remove session
 
-      return { ...prev, session_ids: newSessions };
+      return { ...prev, session_ids: newSessions, date: isChecked ? date : "" };
     });
   };
 
@@ -136,7 +136,7 @@ const HallInfo = () => {
         setWeeklyDate(null);
       }
     }
-    updateSessionArray(value, sessionId);
+    updateSessionArray(value, sessionId, date);
   };
 
   const disableSession = (value) =>
@@ -267,7 +267,7 @@ const HallInfo = () => {
                   >
                     <Checkbox
                       onChange={(value) =>
-                        updateSessionArray(value, session.id)
+                        updateSessionArray(value, session.id, session.date)
                       }
                       value={bookingForm.session_ids.includes(session.id)}
                       id={`session-${session.id}`}

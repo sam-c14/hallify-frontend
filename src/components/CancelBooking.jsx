@@ -28,9 +28,9 @@ const CancelBooking = ({
     (session) => session.id === session_id
   )?.date;
 
-  const isMoreThanAWeekApart = (session_date, booking_date) => {
+  const isMoreThanAWeekApart = (session_date, currentDate) => {
     const sessionDate = new Date(session_date);
-    const bookingDate = new Date(booking_date);
+    const bookingDate = new Date(currentDate);
 
     const differenceInDays =
       (sessionDate - bookingDate) / (1000 * 60 * 60 * 24);
@@ -52,7 +52,10 @@ const CancelBooking = ({
             Are your sure you want to proceed with this action?
           </p>
           <p className="font-inter sm:text-base text-sm text-[#525866]">
-            {isMoreThanAWeekApart(sessionDate, booking_date)
+            {isMoreThanAWeekApart(
+              sessionDate,
+              format(parseISO(new Date().toISOString()), "yyyy-MM-dd")
+            )
               ? "You are cancelling this booking more than a week to the session booked and as such will be refunded 50% of the total cash paid for the booking. "
               : "You will not be refunded for the booking because you are cancelling your booking less than a week to the booking date. "}
             <span className="ml-1 font-instrument-sans sm:text-base italic text-sm">
