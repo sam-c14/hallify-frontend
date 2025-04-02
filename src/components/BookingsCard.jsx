@@ -11,6 +11,7 @@ const BookingsCard = ({
   session,
   date,
   status,
+  hasPaid,
   hall,
   img,
   event_name,
@@ -101,27 +102,41 @@ const BookingsCard = ({
           </div>
         </div>
       </div>
-      <div className="flex gap-x-2 mt-4">
-        {status === "approved" && (
+      <div className="flex sm:flex-row flex-col gap-2 mt-4">
+        {status === "approved" && !hasPaid ? (
           <button
             onClick={handlePayment}
             disabled={paymentLoading}
-            className="bg-[#CBF5E5] hover:scale-105 transition-all text-[#176448] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
+            className="bg-[#CBF5E5] transition-all text-[#176448] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
           >
             {paymentLoading ? "Processing..." : "Pay Now"}
           </button>
+        ) : (
+          <></>
         )}
-        <button
-          onClick={() => setShowModal(true)}
-          disabled={status === "rejected"}
-          className="bg-[#FDEDF0] disabled:bg-[#DF1C41] disabled:text-white disabled:hover:scale-100 font-semibold hover:scale-105 transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
-        >
-          {status === "rejected" ? "Rejected" : "Cancel Booking"}
-        </button>
+        {hasPaid && (
+          <button
+            onClick={handlePayment}
+            disabled
+            className="bg-[#CBF5E5] transition-all text-[#176448] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
+          >
+            Paid
+          </button>
+        )}
+        {hasPaid && status === "approved" ? (
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-[#FDEDF0] font-semibold hover:scale-105 transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
+          >
+            Cancel Booking
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
 
       {status === "rejected" && (
-        <p className="font-inter mt-3.5 sm:text-sm text-xs text-center">
+        <p className="font-inter text-[#DF1C41] mt-3.5 sm:text-sm text-xs text-center">
           This booking has been rejected, Further actions cannot be taken,
           Contat the event manager if you think this was an error.
         </p>
@@ -129,6 +144,9 @@ const BookingsCard = ({
       <ModalWrapper isOpen={showModal} onClose={closeModal}>
         <CancelBooking
           onClose={closeModal}
+          hall_id={hall}
+          booking_date={date}
+          session_id={session[0]}
           handleCancel={handleCancel}
           loading={loading}
         />
