@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ArrowUpIcon from "../assets/icons/arrow-up";
+import { useAppSelector } from "../redux/store";
 
 const Base = () => {
   const [showScroll, setShowScroll] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const { token, user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token && user.role === "admin") navigate("/admin/dashboard");
+  }, []);
 
   // Show/hide scroll-to-top button based on scroll position
   useEffect(() => {

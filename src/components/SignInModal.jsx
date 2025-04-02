@@ -41,6 +41,10 @@ const SignInModalContent = ({ onClose, isSignUp = true }) => {
 
     try {
       const response = await post(baseUrl, form);
+      if (response.role === "event_manager")
+        return toast.error(
+          "You do not have an customer account, Please sign up as a customer"
+        );
       toast.success(
         `Successfully ${authState === "sign-in" ? "logged in" : "registered"}`
       );

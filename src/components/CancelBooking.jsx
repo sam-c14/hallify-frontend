@@ -53,8 +53,8 @@ const CancelBooking = ({
           </p>
           <p className="font-inter sm:text-base text-sm text-[#525866]">
             {isMoreThanAWeekApart(sessionDate, booking_date)
-              ? "You are cancelling this booking more than a week to the session booked and as such will be refunded 50% of the total cash paid for the booking"
-              : "You will be refunded only 25% of the total paid for the booking because you are cancelling your booking less than a week to the booking date"}
+              ? "You are cancelling this booking more than a week to the session booked and as such will be refunded 50% of the total cash paid for the booking. "
+              : "You will not be refunded for the booking because you are cancelling your booking less than a week to the booking date. "}
             <span className="ml-1 font-instrument-sans sm:text-base italic text-sm">
               If you have any enquires, Please contact support.
             </span>
