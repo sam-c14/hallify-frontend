@@ -1,9 +1,9 @@
 import React from "react";
 import VenueCard from "./VenueCard";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
-const VenueList = ({ venues, title, description, xlCount }) => {
-  const navigate = useNavigate();
+const VenueList = ({ venues, title, description, xlCount, cols_2 }) => {
+  // const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-y-2 font-inter">
@@ -14,13 +14,13 @@ const VenueList = ({ venues, title, description, xlCount }) => {
         </p>
       )}
       <div
-        className={`grid gap-x-3 gap-y-6 place-items-center mt-2 md:grid-cols-3 grid-cols-1 xl:grid-cols-${
+        className={`grid gap-x-3 gap-y-6 place-items-center mt-2 grid-cols-1 xl:grid-cols-${
           xlCount ?? 5
-        }`}
+        } ${cols_2 ? "xl:grid-cols-3 md:grid-cols-2" : "md:grid-cols-3"}`}
       >
         {venues.map((venue, index) => (
           <VenueCard
-            onClick={() => navigate(`/hall/${venue.id}`)}
+            onClick={() => window.location.assign(`/hall/${venue.id}`)}
             key={index}
             cardImg={venue.src}
             guestCapacity={venue.guestCapacity}

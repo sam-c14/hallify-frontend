@@ -89,7 +89,10 @@ export const patch = async (url, data) => {
 export default axiosInstance;
 
 export const parseError = (e) => {
-  return e.response.data.error;
+  const errors = Object.keys(e.response.data)
+    .map((err) => e.response.data[err])
+    .join(", ");
+  return errors;
 };
 
 export function debounce(func, delay) {

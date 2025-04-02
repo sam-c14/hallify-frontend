@@ -7,7 +7,7 @@ import Checkbox from "../components/Checkbox";
 import CustomDatePicker from "../components/CustomDatePicker";
 import Error from "../assets/icons/error";
 import useFetch from "../utils/fetch";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 import { post, parseError } from "../utils/axios";
 import Spinner from "../components/Spinner";
@@ -16,6 +16,7 @@ import { useAppSelector } from "../redux/store";
 
 const HallInfo = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.auth);
   const [bookingForm, setBookingForm] = useState({
     session_ids: [],
@@ -29,13 +30,23 @@ const HallInfo = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showWeeklySessions, setShowWeeklySessions] = useState(false);
 
-  const { data, error, isLoading, mutate } = useFetch(
-    `bookings/halls/${params.id}`
-  );
+  const { data, error, isLoading } = useFetch(`bookings/halls/${params.id}`);
 
-  // console.log(data);
+  const clearData = () => {
+    setWeeklyDate(null);
+    setSelectedDate(null);
+    setShowWeeklySessions(false);
+    setBookingForm({
+      session_ids: [],
+      date: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
+      // end_date: "",
+      event_name: "",
+      hall_id: Number(params.id),
+    });
+  };
 
   if (isLoading || error) {
+    // if (isLoading) clearData();
     return (
       <div className="grid place-items-center min-h-screen">
         {isLoading ? (
@@ -139,9 +150,10 @@ const HallInfo = () => {
     try {
       const response = await post("bookings/create/", bookingForm);
       toast.success("Hall successfully booked!");
-      // navigate("/admin/sessions");
+      navigate("/manage-bookings");
       console.log(response);
-      await mutate();
+      clearData();
+      // await mutate();
     } catch (error) {
       const errMsg = parseError(error);
       console.log(errMsg);
@@ -211,6 +223,7 @@ const HallInfo = () => {
             <VenueList
               venues={venues.filter((venue) => venue.id !== Number(params.id))}
               xlCount={4}
+              cols_2
               title="Other Hotel Halls"
             />
           </div>
