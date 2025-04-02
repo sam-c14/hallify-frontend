@@ -25,8 +25,8 @@ const HallInfo = () => {
     hall_id: Number(params.id),
   });
   const [loading, setLoading] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState("");
+  const [weeklyDate, setWeeklyDate] = useState(null); // Seperate state to track weekly date to avoid conflict with using selectedDate state
+  const [selectedDate, setSelectedDate] = useState(null);
   const [showWeeklySessions, setShowWeeklySessions] = useState(false);
 
   const { data, error, isLoading, mutate } = useFetch(
@@ -99,8 +99,6 @@ const HallInfo = () => {
       })
     : [];
 
-  // console.log(data.sessions);
-
   const updateSessionArray = (isChecked, sessionType) => {
     setBookingForm((prev) => {
       const newSessions = isChecked
@@ -115,6 +113,24 @@ const HallInfo = () => {
     const { session_ids, event_name } = bookingForm;
     return !event_name || session_ids.length === 0;
   };
+
+  const handleCheckboxChange = (value, sessionId, date) => {
+    if (value) {
+      setWeeklyDate(date);
+    } else {
+      const remainingSelected = bookingForm.session_ids.filter(
+        (id) => weeklySessions.find((s) => s.id === id)?.date === date
+      );
+      if (remainingSelected.length === 1) {
+        setWeeklyDate(null);
+      }
+    }
+    updateSessionArray(value, sessionId);
+  };
+
+  const disableSession = (value) =>
+    weeklySessions?.find((session) => session.date === weeklyDate) &&
+    value !== weeklyDate;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -232,7 +248,10 @@ const HallInfo = () => {
             <div className="mt-4">
               {filteredSessions.length > 0 ? (
                 filteredSessions.map((session) => (
-                  <label key={session.id} className="flex items-center gap-x-3">
+                  <label
+                    key={session.id}
+                    className="flex items-center sm:text-base text-sm gap-x-3"
+                  >
                     <Checkbox
                       onChange={(value) =>
                         updateSessionArray(value, session.id)
@@ -252,7 +271,7 @@ const HallInfo = () => {
                 <button
                   type="button"
                   onClick={() => setShowWeeklySessions(!showWeeklySessions)}
-                  className="mt-3 text-blue-500 underline"
+                  className="mt-3 text-blue-500 underline sm:text-base text-sm"
                 >
                   {showWeeklySessions ? "Hide" : "See"} all available sessions
                   this week
@@ -263,41 +282,53 @@ const HallInfo = () => {
             {/* Show weekly sessions if no sessions found for selected date */}
             {showWeeklySessions && (
               <div className="mt-5">
-                <h4 className="font-semibold text-lg mb-4">
+                <h4 className="font-semibold sm:text-lg text-base mb-4">
                   Sessions this week:
                 </h4>
                 {weeklySessions.length > 0 ? (
-                  weeklySessions.map((session) => (
-                    <label
-                      key={session.id}
-                      htmlFor={`session-${session.id}`}
-                      className="flex items-center gap-x-3 my-1"
-                    >
-                      <Checkbox
-                        onChange={(value) => {
-                          console.log(value);
-                          updateSessionArray(value, session.id);
-                        }}
-                        value={bookingForm.session_ids.includes(session.id)}
-                        id={`session-${session.id}`}
-                        name="session"
-                      />
-                      <span className="font-inter">
-                        {session.session_type.charAt(0).toUpperCase() +
-                          session.session_type.slice(1)}{" "}
-                        Session - {session.date}
-                      </span>
-                    </label>
-                  ))
+                  weeklySessions.map((session) => {
+                    const isDisabled = disableSession(session.date);
+                    return (
+                      <label
+                        key={session.id}
+                        htmlFor={`session-${session.id}`}
+                        className={`flex items-center gap-x-3 my-1 sm:text-base text-sm ${
+                          isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        <Checkbox
+                          onChange={(value) =>
+                            handleCheckboxChange(
+                              value,
+                              session.id,
+                              session.date
+                            )
+                          }
+                          value={bookingForm.session_ids.includes(session.id)}
+                          id={`session-${session.id}`}
+                          name="session"
+                          disabled={isDisabled}
+                        />
+                        <span className="font-inter text-inherit">
+                          {session.session_type.charAt(0).toUpperCase() +
+                            session.session_type.slice(1) +
+                            " "}
+                          Session - {session.date}
+                        </span>
+                      </label>
+                    );
+                  })
                 ) : (
-                  <p>No available sessions for this week.</p>
+                  <p className="sm:text-base text-sm">
+                    No available sessions for this week.
+                  </p>
                 )}
               </div>
             )}
             <div className="flex items-center font-inter gap-x-4 bg-[#FDEDF0] my-5 py-2.5 rounded-xl px-4">
               <Error />
               <p className="sm:text-sm text-xs font-normal">
-                50% Refunds on Booking Cancellation
+                25% - 50% Refunds on Booking Cancellation
               </p>
             </div>
             <div>
