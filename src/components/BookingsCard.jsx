@@ -114,14 +114,22 @@ const BookingsCard = ({
         ) : (
           <></>
         )}
-        {hasPaid && (
+        {hasPaid && status !== "canceled" ? (
           <button
-            onClick={handlePayment}
             disabled
             className="bg-[#CBF5E5] transition-all text-[#176448] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
           >
             Paid
           </button>
+        ) : status === "canceled" ? (
+          <button
+            disabled
+            className="bg-[#FDEDF0] font-semibold transition-all text-[#DF1C41] rounded-xl text-center sm:text-base text-sm py-2.5 w-full font-inter"
+          >
+            Cancelled
+          </button>
+        ) : (
+          <></>
         )}
         {hasPaid && status === "approved" ? (
           <button
