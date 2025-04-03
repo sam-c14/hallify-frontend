@@ -37,7 +37,7 @@ export default function CreateSession() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!hallId || !startDate || !endDate) {
+    if (!startDate || !endDate) {
       toast.error("Please fill all fields correctly.");
       return;
     }
