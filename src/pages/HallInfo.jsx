@@ -341,7 +341,7 @@ const HallInfo = () => {
             <div className="flex items-center font-inter gap-x-4 bg-[#FDEDF0] my-5 py-2.5 rounded-xl px-4">
               <Error />
               <p className="sm:text-sm text-xs font-normal">
-                50% Refunds on Booking Cancellation
+                50% Refunds on Booking Cancellation. T & C apply
               </p>
             </div>
             <div>
