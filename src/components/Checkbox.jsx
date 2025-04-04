@@ -1,4 +1,4 @@
-const Checkbox = ({ id, name, value, onChange }) => {
+const Checkbox = ({ id, name, value, onChange, disabled }) => {
   return (
     <div className="flex items-center cursor-pointer">
       <input
@@ -6,6 +6,7 @@ const Checkbox = ({ id, name, value, onChange }) => {
         name={name}
         type="checkbox"
         className="hidden"
+        disabled={disabled}
         checked={value}
         onChange={() => onChange(!value)}
       />
