@@ -16,7 +16,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (token && user.role !== "admin") navigate("/");
-    if (!token && !["/admin/login", "/admin/create"].includes(location.pathname))
+    if (!token && !["/admin/login", "/admin/create"].includes(location.pathname)) navigate("/admin/login")
   }, []);
 
   useEffect(() => {
